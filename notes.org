@@ -1,0 +1,2 @@
+* SDL_GetError
+  similar to Linux' =errno=, this will return whatever went wrong last
