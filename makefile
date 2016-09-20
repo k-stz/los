@@ -5,11 +5,12 @@
 SDL_LIB = `pkg-config --libs sdl2`
 SDL_INCLUDE = `pkg-config --cflags sdl2`
 
-FLAGS = -Wall -c -std=c++11 $(SDL_INCLUDE)
+FLAGS = -Wall -c -std=c++11 $(SDL_INCLUDE) -g
 LDFLAGS = $(SDL_LIB)
 
 FILES = \
-	main.cpp
+	main.cpp \
+	src/world.cpp
 
 build: $(FILES)
 	$(CXX) $(LDFLAGS) $^ -o bin/main

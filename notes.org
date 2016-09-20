@@ -1,2 +1,16 @@
 * SDL_GetError
   similar to Linux' =errno=, this will return whatever went wrong last
+
+
+* Code Architecture
+
+  - Need: Classes for Level (array of tiles etc, objects, etc), World (a level and physics/grav/...), a Tile,
+    Entity (update() and render(), other properties like "is it solid" or "is it static (not affected by grav)"
+  - Common problems with such levels include the Z axis of the tiles and the player (i.e. the drawing order) so we might want to have different layers where one layer is in front of the player (closer to the screen) and others are behind it (also: parallax scrolling)
+  - Do we save all tile graphics in one png (better for possible opengl future) or several?
+  - Abstract drawing so we can change that if we want, e.g. use opengl or even another 2D engine
+  Later: Menu/settings/general UI stuff
+
+  LET YOUR DUMB EDITOR REMOVE TRAILING WHITESPACE WTF
+
+* Gameplay
