@@ -1,4 +1,5 @@
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 #include <iostream>
 #include "src/world.hpp"
 
@@ -7,12 +8,16 @@ const int SCREEN_HEIGHT = 360;
 
 int main( int argc, char* args[]) {
   SDL_Window* window = NULL;
-  SDL_Surface* screenSurface = NULL;
-  World *world = new World();
+  World *world;
   bool running = true;
 
   if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS) < 0) {
     std::cout << "Couldn't initialize SDL" << std::endl;
+    return -1;
+  }
+
+  if (TTF_Init() == -1) {
+    std::cout << "Couldn't initialize sdl_ttf: " << TTF_GetError() << std::endl;
     return -1;
   }
 
@@ -27,19 +32,35 @@ int main( int argc, char* args[]) {
     return -2;
   }
 
-  screenSurface = SDL_GetWindowSurface( window );
+  SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+  SDL_RenderSetLogicalSize(renderer, SCREEN_WIDTH, SCREEN_HEIGHT);
+  SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // Red
 
+
+
+  world = new World();
   // TODO: We should do event handling somewhere else
-  SDL_Event e;
+  SDL_Event event;
+  unsigned int last_time = SDL_GetTicks();
+  unsigned int current_time;
   while (running) {
-    while (SDL_PollEvent(&e) != 0) {
-      if (e.type == SDL_QUIT) {
+    while (SDL_PollEvent(&event) != 0) {
+      if (event.type == SDL_QUIT) {
         running = false;
       }
     }
 
-    SDL_FillRect( screenSurface, NULL, SDL_MapRGB ( screenSurface->format, 0x1F, 0x00, 0xFF));
-    SDL_UpdateWindowSurface( window );
+    current_time = SDL_GetTicks();
+    unsigned int frame_time = current_time - last_time;
+    world->update(frame_time);
+
+    SDL_RenderClear(renderer);
+    world->render(renderer);
+    SDL_RenderPresent(renderer);
+
+    SDL_UpdateWindowSurface (window);
+    last_time = current_time;
+
   }
 
   // clean up
