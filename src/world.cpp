@@ -16,7 +16,8 @@ void World::update(unsigned int delta) {
 
   // One second passed
   if (fps_counter >= 1000) {
-    this->current_fps = this->fps_counter;
+    this->current_fps = this->frame_counter;
+    this->frame_counter = 0;
     this->fps_counter = 0;
   }
 }
