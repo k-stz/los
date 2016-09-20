@@ -10,7 +10,8 @@ LDFLAGS = $(SDL_LIB)
 
 FILES = \
 	main.cpp \
-	src/world.cpp
+	src/world.cpp 
+
 
 build: $(FILES)
 	$(CXX) $(LDFLAGS) $^ -o bin/main

@@ -2,9 +2,18 @@
 #include <SDL2/SDL_ttf.h>
 #include <iostream>
 #include "src/world.hpp"
+#include "src/events.cpp"
 
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 360;
+
+// TODO put somewhere else
+void quit(SDL_Window* window) {
+  // clean up
+  SDL_DestroyWindow( window );
+  SDL_Quit();
+}
+
 
 int main( int argc, char* args[]) {
   SDL_Window* window = NULL;
@@ -34,7 +43,7 @@ int main( int argc, char* args[]) {
 
   SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
   SDL_RenderSetLogicalSize(renderer, SCREEN_WIDTH, SCREEN_HEIGHT);
-  SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // Red
+  SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // sets clear-color to Red
 
 
 
@@ -44,11 +53,8 @@ int main( int argc, char* args[]) {
   unsigned int last_time = SDL_GetTicks();
   unsigned int current_time;
   while (running) {
-    while (SDL_PollEvent(&event) != 0) {
-      if (event.type == SDL_QUIT) {
-        running = false;
-      }
-    }
+
+    running = handleEvents(event, window);
 
     current_time = SDL_GetTicks();
     unsigned int frame_time = current_time - last_time;
@@ -63,10 +69,9 @@ int main( int argc, char* args[]) {
 
   }
 
-  // clean up
-  SDL_DestroyWindow( window );
-  SDL_Quit();
+  quit(window);
 
   return 0;
 
 }
+
