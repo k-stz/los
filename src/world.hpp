@@ -5,9 +5,11 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 
+#include "level.hpp"
+
 class World {
 public:
-  World();
+  World(SDL_Renderer *renderer);
 
   void update(unsigned int delta);
   void render(SDL_Renderer *renderer);
@@ -18,6 +20,9 @@ private:
   unsigned int current_fps   = 0;
 
   TTF_Font *default_font;
+
+  // Current game state
+  Level *level;
 };
 
 #endif

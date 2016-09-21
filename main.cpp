@@ -47,7 +47,7 @@ int main( int argc, char* args[]) {
 
 
 
-  world = new World();
+  world = new World(renderer);
   // TODO: We should do event handling somewhere else
   SDL_Event event;
   unsigned int last_time = SDL_GetTicks();

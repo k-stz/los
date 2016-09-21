@@ -2,11 +2,13 @@
 
 #include <iostream>
 
-World::World() {
+World::World(SDL_Renderer *renderer) {
   this->default_font = TTF_OpenFont("DejaVuSans.ttf", 20);
   if (default_font == NULL) {
     std::cout << "Couldn't load font: " << TTF_GetError() << std::endl;
   }
+
+  this->level = new Level("data/level1.json", renderer);
 }
 
 // delta in milliseconds
@@ -20,9 +22,15 @@ void World::update(unsigned int delta) {
     this->frame_counter = 0;
     this->fps_counter = 0;
   }
+
+
+  level->update(delta);
 }
 
 void World::render(SDL_Renderer *renderer) {
+  level->render(renderer);
+
+
   // TODO: Update all this only once a second
   char buffer[20];
   sprintf(buffer, "FPS: %d", this->current_fps);
