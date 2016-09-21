@@ -5,7 +5,7 @@
 SDL_LIB = `pkg-config --libs sdl2 SDL2_ttf`
 SDL_INCLUDE = `pkg-config --cflags sdl2 SDL2_ttf`
 
-FLAGS = -Wall -c -std=c++11 $(SDL_INCLUDE) -g
+CFLAGS = -Wall -std=c++11 $(SDL_INCLUDE) -g -DJSON_IS_AMALGAMATION
 LDFLAGS = $(SDL_LIB)
 
 FILES = \
@@ -14,7 +14,7 @@ FILES = \
 
 
 build: $(FILES)
-	$(CXX) $(LDFLAGS) $^ -o bin/main
+	$(CXX) $(CFLAGS) $(LDFLAGS) $^ -o bin/main
 
 run-main:
 	./bin/main
