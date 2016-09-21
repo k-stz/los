@@ -1,0 +1,12 @@
+{
+  "name" : "Level1 Test",
+  "width_in_tiles" : 32,
+  "height_in_tiles" : 32,
+
+  "background" : "level1_bg.png",
+  "data" : [
+    [
+      1, 2
+    ]
+  ]
+}
