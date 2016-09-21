@@ -4,6 +4,14 @@
 #include <SDL2/SDL.h>
 #include <string>
 
+const int TILE_WIDTH = 32;
+const int TILE_HEIGHT = 32;
+
+struct Tile {
+  int x, y;
+  int index;
+};
+
 class Level {
 public:
 
@@ -17,6 +25,8 @@ private:
 
   std::string name;
   SDL_Texture *bg_texture = nullptr;
+
+  Tile *tiles;
 
   void load(const std::string &filename, SDL_Renderer *renderer);
 };

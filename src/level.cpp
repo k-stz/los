@@ -20,6 +20,21 @@ void Level::render(SDL_Renderer *renderer) {
   SDL_GetRendererOutputSize(renderer, &w, &h);
   SDL_Rect bg_rect = {0, 0, w, h};
   SDL_RenderCopy(renderer, bg_texture, NULL, &bg_rect);
+
+  for (unsigned int i = 0; i < width_in_tiles * height_in_tiles; i ++) {
+    // empty tile
+    if (tiles[i].index == -1)
+      continue;
+
+    int y =  i / width_in_tiles;
+    int x = i - (y * height_in_tiles);
+
+    // TODO: Just fill them red for now
+    SDL_Rect r = {x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT};
+    SDL_RenderFillRect (renderer, &r);
+  }
+
+
 }
 
 void Level::load(const std::string &filename, SDL_Renderer *renderer) {
@@ -41,6 +56,10 @@ void Level::load(const std::string &filename, SDL_Renderer *renderer) {
   this->width_in_tiles = static_cast<unsigned int>(root_obj["width_in_tiles"].get<double>());
   this->height_in_tiles = static_cast<unsigned int>(root_obj["height_in_tiles"].get<double>());
 
+  this->tiles = new Tile[width_in_tiles * height_in_tiles];
+  for (unsigned int i = 0; i < width_in_tiles * height_in_tiles; i ++)
+    tiles[i] = {0, 0, -1};
+
   // Load background image
   // TODO: Make this optional
   std::string bg_path = "data/" + root_obj["background"].get<std::string>();
@@ -50,7 +69,19 @@ void Level::load(const std::string &filename, SDL_Renderer *renderer) {
   assert(bg_texture != nullptr);
 
 
-  auto data_obj = root_obj["data"];
+  auto tiles_array = root_obj["tiles"].get<picojson::array>();
+  int cur_row = 0;
+  for (auto r : tiles_array) {
+    auto row = r.get<picojson::array>();
+
+    int cur_col = 0;
+    for (auto c : row) {
+      int tile_id = static_cast<int>(c.get<double>());
+      tiles[cur_row * width_in_tiles + cur_col].index = tile_id;
+      cur_col ++;
+    }
+    cur_row ++;
+  }
 }
 
 

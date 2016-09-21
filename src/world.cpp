@@ -34,7 +34,7 @@ void World::render(SDL_Renderer *renderer) {
   // TODO: Update all this only once a second
   char buffer[20];
   sprintf(buffer, "FPS: %d", this->current_fps);
-  SDL_Color color = {0, 0, 0, 255};
+  SDL_Color color = {0, 255, 0, 255};
   SDL_Surface *fps_surface = TTF_RenderText_Solid(default_font, buffer, color);
   SDL_Texture *fps_texture = SDL_CreateTextureFromSurface(renderer, fps_surface);
   SDL_FreeSurface(fps_surface);

@@ -4,8 +4,8 @@
 #include "src/world.hpp"
 #include "src/events.cpp"
 
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 360;
+const int SCREEN_WIDTH = 1024;
+const int SCREEN_HEIGHT = 768;
 
 // TODO put somewhere else
 void quit(SDL_Window* window) {
