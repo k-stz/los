@@ -2,15 +2,53 @@
   similar to Linux' =errno=, this will return whatever went wrong last
 
 
+* Magit merging
+  use =smerge-mode= on the "unmerged" files. <<<<<<HEADER part is _yours_
+  with =C-c ^ m= you keep (m)y version, with =C-c ^ o= (o)ther version
+  
 * Code Architecture
 
   - Need: Classes for Level (array of tiles etc, objects, etc), World (a level and physics/grav/...), a Tile,
     Entity (update() and render(), other properties like "is it solid" or "is it static (not affected by grav)"
-  - Common problems with such levels include the Z axis of the tiles and the player (i.e. the drawing order) so we might want to have different layers where one layer is in front of the player (closer to the screen) and others are behind it (also: parallax scrolling)
+  - Common problems with such levels include the Z axis of the tiles and the player
+    (i.e. the drawing order) so we might want to have different layers where one layer is
+    in front of the player (closer to the screen) and others are behind it (also: parallax
+    scrolling)
   - Do we save all tile graphics in one png (better for possible opengl future) or several?
   - Abstract drawing so we can change that if we want, e.g. use opengl or even another 2D engine
   Later: Menu/settings/general UI stuff
 
-  LET YOUR DUMB EDITOR REMOVE TRAILING WHITESPACE WTF
 
-* Gameplay
+* Current Architecture overview:
+
+** init
+   TODO: remarks on how =World=.hpp inits itself with a Level etc
+  
+** input
+   1. Feeds current PollEvents, mainly input, to World (src/world.cpp/hpp)
+   2. World passes input to player (src/player.cpp/hpp
+   3. player is an =entity=.hpp and can apply_force to self (vector)
+   // TODO: in this step inputs distributed to the active entities, so this is where
+   //       we can put the UI stuff like entering the Menu working with the Level-Editor
+   //       those could perhaps be represented as =Entities.hpp= as they need =input=, =position=
+   //       and need to be =update='d 
+      
+** "Updating" - not rendering, just applying the data between the objects 
+
+   Now that the forces are distributed in the entities attributes (inherited from
+   =Entity=.hpp). We can use the data to update the world to, for example, move the player
+   on the screen etc.
+
+   =World=.cpp update:
+   1. Use the =frame_time= (current_time - last_time, calculation via SDL_GetTicks)
+      as a parameter to =world->update(frame_time)=
+   2. _Gravity_. We =apply_force= on the player "again" now not through his own will (user
+      input) but due to the principle of gravity
+   3. =level->update(delta)=
+   4. =player-update(delta)=
+      
+   =Level=.cpp update:
+   TODO: Well nothing happens, what's this for?
+
+   =Player=.cpp update:
+   1. update player position + collision detection ... 

@@ -29,6 +29,7 @@ void Player::input(Input *input) {
 
 void Player::update(unsigned int delta) {
   // Will update the position according to the currently applied force
+  // position attribute is inherited from entity(.hpp)
   Entity::update(delta);
 
 

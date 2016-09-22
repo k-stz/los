@@ -42,6 +42,7 @@ int main( int argc, char* args[]) {
     return -2;
   }
 
+  // use SDL_RENDERER_SOFTWARE on Laptop !
   SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
   SDL_RenderSetLogicalSize(renderer, SCREEN_WIDTH, SCREEN_HEIGHT);
   SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // sets clear-color to Red
@@ -54,7 +55,7 @@ int main( int argc, char* args[]) {
   unsigned int current_time;
   while (running) {
     while(SDL_PollEvent(&event)) {
-      Input input;
+      Input input; // first we collect the PollEvent inputs in var "input"
       switch(event.type) {
         case SDL_KEYDOWN:
           input.down = true;
@@ -68,7 +69,7 @@ int main( int argc, char* args[]) {
           running = false;
           break;
       }
-
+      // then we pass the input to the world, which currently in turn passes it to the player
       if (running) {
         world->input(&input);
       }
