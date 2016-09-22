@@ -10,6 +10,13 @@ Level::Level(const std::string &filename, SDL_Renderer *renderer) {
   this->load(filename, renderer);
 }
 
+Level::~Level() {
+  SDL_DestroyTexture(tileset_texture);
+  SDL_DestroyTexture(bg_texture);
+  delete[] tiles;
+  delete[] tile_definitions;
+}
+
 void Level::update(unsigned int delta) {
 
 }

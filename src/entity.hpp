@@ -10,6 +10,8 @@ public:
   vec2 position;
   bool is_static = true;
 
+  virtual ~Entity(){}
+
   virtual void input(Input *input);
   virtual void update(unsigned int delta);
   virtual void render(SDL_Renderer *renderer) = 0;

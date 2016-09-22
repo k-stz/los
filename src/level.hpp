@@ -20,6 +20,8 @@ class Level {
 public:
 
   Level(const std::string &filename, SDL_Renderer *renderer);
+  virtual ~Level();
+
   void update(unsigned int delta);
   void render(SDL_Renderer *renderer);
 

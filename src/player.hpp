@@ -9,6 +9,8 @@ class Player : public Entity {
 public:
   Player(Level *level);
 
+  virtual ~Player(){}
+
   void input(Input *input) override;
   void update(unsigned int delta) override;
   void render(SDL_Renderer *renderer) override;

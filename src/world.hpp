@@ -12,6 +12,7 @@
 class World {
 public:
   World(SDL_Renderer *renderer);
+  ~World();
 
   void input(Input *input);
   void update(unsigned int delta);

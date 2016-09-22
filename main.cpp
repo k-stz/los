@@ -9,6 +9,7 @@ const int SCREEN_HEIGHT = 768;
 
 // TODO put somewhere else
 void quit(SDL_Window* window) {
+  TTF_Quit();
   // clean up
   SDL_DestroyWindow( window );
   SDL_Quit();
@@ -87,10 +88,10 @@ int main( int argc, char* args[]) {
   }
 
   delete world;
+  SDL_DestroyRenderer(renderer);
 
   quit(window);
 
   return 0;
-
 }
 

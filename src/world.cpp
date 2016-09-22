@@ -14,6 +14,12 @@ World::World(SDL_Renderer *renderer) {
   this->player = new Player(level);
 }
 
+World::~World() {
+  delete level;
+  delete player;
+  TTF_CloseFont(default_font);
+}
+
 void World::input(Input *input) {
   player->input(input);
 }
@@ -52,4 +58,5 @@ void World::render(SDL_Renderer *renderer) {
   SDL_Rect fps_pos = {0, 0};
   SDL_QueryTexture(fps_texture, NULL, NULL, &fps_pos.w, &fps_pos.h);
   SDL_RenderCopy(renderer, fps_texture, NULL, &fps_pos);
+  SDL_DestroyTexture(fps_texture);
 }
