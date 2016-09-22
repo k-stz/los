@@ -34,21 +34,27 @@ void Player::update(unsigned int delta) {
 
   // collision detection
 
-  int center_x = (position.x + width/2) / 32;
+  int left_x  = position.x / 32;
+  int right_x = (position.x + width) / 32;
   // bottom
   bool touches_ground = false;
   int bottom_y = (position.y + height) / 32;
-  std::cout << bottom_y << std::endl;
-  if (level->is_tile_solid(center_x, bottom_y)) {
-      // move up, reset y force
-      this->current_force.y = 0;
-      this->position.y = (bottom_y - 1) * 32;
-      touches_ground = true;
+
+  if (level->is_tile_solid(left_x, bottom_y)) {
+    // move up, reset y force
+    this->position.y = (bottom_y - 1) * 32;
+    touches_ground = true;
   }
 
+  if (level->is_tile_solid(right_x, bottom_y)) {
+    this->position.y = (bottom_y - 1) * 32;
+    touches_ground = true;
+  }
 
-  if (touches_ground)
+  if (touches_ground) {
+  this->current_force.y = 0;
     apply_force(vec2(- current_force.x / 100, 0)); // Friction!
+  }
 
 
   this->current_force.min_all(MAX_FORCE);
