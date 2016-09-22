@@ -13,8 +13,7 @@ World::World(SDL_Renderer *renderer) {
 }
 
 void World::input(Input *input) {
-  if (input->down && input->keycode == SDLK_SPACE)
-     std::cout << "space down" << std::endl;
+  player->input(input);
 }
 
 // delta in milliseconds
