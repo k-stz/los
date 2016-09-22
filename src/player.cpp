@@ -22,7 +22,7 @@ void Player::input(Input *input) {
     } else if (input->keycode == SDLK_LEFT) {
       apply_force(vec2(-0.1, 0));
     } else if (input->keycode == SDLK_SPACE) {
-      apply_force(vec2(0, -0.2));
+      apply_force(vec2(0, -(current_force.y + 0.3)));
     }
   }
 }
@@ -34,26 +34,41 @@ void Player::update(unsigned int delta) {
 
   // collision detection
 
-  int left_x  = position.x / 32;
-  int right_x = (position.x + width) / 32;
-  // bottom
-  bool touches_ground = false;
+  int left_x   = position.x / 32;
+  int right_x  = (position.x + width) / 32;
+  int top_y    = position.y / 32;
   int bottom_y = (position.y + height) / 32;
 
-  if (level->is_tile_solid(left_x, bottom_y)) {
+  // bottom
+  bool touches_ground = false;
+  if (level->is_tile_solid(left_x, bottom_y) ||
+      level->is_tile_solid(right_x, bottom_y)) {
     // move up, reset y force
     this->position.y = (bottom_y - 1) * 32;
     touches_ground = true;
   }
 
-  if (level->is_tile_solid(right_x, bottom_y)) {
-    this->position.y = (bottom_y - 1) * 32;
-    touches_ground = true;
+  bool touches_side = false;
+  if ((touches_ground && level->is_tile_solid(right_x, top_y)) ||
+      (!touches_ground && level->is_tile_solid(right_x, bottom_y))) {
+    this->position.x = (right_x - 1) * 32;
+    touches_side = true;
+  }
+
+  if ((touches_ground && level->is_tile_solid(left_x, top_y)) ||
+      (!touches_ground && level->is_tile_solid(left_x, bottom_y))) {
+    this->position.x = (left_x + 1) * 32;
+    touches_side = true;
   }
 
   if (touches_ground) {
-  this->current_force.y = 0;
+    this->current_force.y = 0;
     apply_force(vec2(- current_force.x / 100, 0)); // Friction!
+  }
+
+  if (touches_side) {
+    this->current_force.x = 0;
+    apply_force(vec2(0, - current_force.y / 100)); // Friction!
   }
 
 
