@@ -101,4 +101,23 @@ void Level::load(const std::string &filename, SDL_Renderer *renderer) {
   }
 }
 
+bool Level::is_tile_solid(unsigned int x, unsigned int y) {
+  assert(x >= 0);
+  assert(x < width_in_tiles);
+  assert(y >= 0);
+  assert(y < height_in_tiles);
+  // TODO: Replace with actual implementation
+  if (x == 0)
+     return true;
+  else if (x == 19)
+    return true;
+
+  if (y == 0)
+    return true;
+  else if (y == 19)
+    return true;
+
+  return false;
+}
+
 

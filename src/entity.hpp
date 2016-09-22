@@ -8,10 +8,16 @@
 class Entity {
 public:
   vec2 position;
+  bool is_static = true;
 
   virtual void input(Input *input);
-  virtual void update(unsigned int delta)     = 0;
+  virtual void update(unsigned int delta);
   virtual void render(SDL_Renderer *renderer) = 0;
+
+  void apply_force(vec2 force);
+
+protected:
+  vec2 current_force;
 
 private:
 };

@@ -14,7 +14,6 @@ public:
   void render(SDL_Renderer *renderer) override;
 
 private:
-  vec2 current_force;
   Level *level;
 };
 

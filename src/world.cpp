@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+const vec2 GRAVITY = vec2(0, 0.000481);
+
 World::World(SDL_Renderer *renderer) {
   this->default_font = TTF_OpenFont("DejaVuSans.ttf", 20);
   if (default_font == NULL) {
@@ -28,6 +30,7 @@ void World::update(unsigned int delta) {
     this->fps_counter = 0;
   }
 
+  player->apply_force(GRAVITY);
 
   level->update(delta);
   player->update(delta);

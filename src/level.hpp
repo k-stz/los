@@ -19,6 +19,8 @@ public:
   void update(unsigned int delta);
   void render(SDL_Renderer *renderer);
 
+  bool is_tile_solid(unsigned int x, unsigned int y);
+
 private:
   unsigned int width_in_tiles = 0;
   unsigned int height_in_tiles = 0;
