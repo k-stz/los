@@ -38,6 +38,14 @@ void Level::render(SDL_Renderer *renderer) {
     else if (tiles[i].index == 2)
       SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
 
+#if 0
+    if (this->is_tile_solid(x, y))
+      SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+    else
+      SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+#endif
+
+
     SDL_RenderFillRect (renderer, &r);
   }
 
@@ -106,18 +114,9 @@ bool Level::is_tile_solid(unsigned int x, unsigned int y) {
   assert(x < width_in_tiles);
   assert(y >= 0);
   assert(y < height_in_tiles);
-  // TODO: Replace with actual implementation
-  if (x == 0)
-     return true;
-  else if (x == 19)
-    return true;
 
-  if (y == 0)
-    return true;
-  else if (y == 19 && x <= 10)
-    return true;
-
-  return false;
+  // XXX Replace this
+  return tiles[y * width_in_tiles + x].index == 2;
 }
 
 
