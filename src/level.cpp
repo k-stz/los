@@ -29,8 +29,15 @@ void Level::render(SDL_Renderer *renderer) {
     int y =  i / width_in_tiles;
     int x = i - (y * height_in_tiles);
 
-    // TODO: Just fill them red for now
+    // TODO: Add some definition of tiles and use those instead
     SDL_Rect r = {x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT};
+    if (tiles[i].index == 0)
+      SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+    else if (tiles[i].index == 1)
+      SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
+    else if (tiles[i].index == 2)
+      SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+
     SDL_RenderFillRect (renderer, &r);
   }
 
