@@ -42,6 +42,16 @@ void Level::render(SDL_Renderer *renderer) {
   }
 
 
+
+  // Debug: Draw tile borders
+  SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+  for (unsigned int x = 1; x < width_in_tiles; x ++) {
+    SDL_RenderDrawLine(renderer, x * 32, 0, x * 32, height_in_tiles * 32);
+  }
+
+  for (unsigned int y = 1; y < height_in_tiles; y ++) {
+    SDL_RenderDrawLine(renderer, 0, y * 32, width_in_tiles * 32, y * 32);
+  }
 }
 
 void Level::load(const std::string &filename, SDL_Renderer *renderer) {
