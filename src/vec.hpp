@@ -7,6 +7,12 @@ public:
   float x = 0;
   float y = 0;
 
+  vec2(){}
+  vec2(float x, float y) {
+    this->x = x;
+    this->y = y;
+  }
+
   vec2& operator += (const vec2& other) {
     this->x += other.x;
     this->y += other.y;
