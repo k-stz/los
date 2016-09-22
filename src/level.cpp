@@ -29,29 +29,18 @@ void Level::render(SDL_Renderer *renderer) {
     int y =  i / width_in_tiles;
     int x = i - (y * width_in_tiles);
 
-    // TODO: Add some definition of tiles and use those instead
-    SDL_Rect r = {x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT};
-    if (tiles[i].index == 0)
-      SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-    else if (tiles[i].index == 1)
-      SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
-    else if (tiles[i].index == 2)
-      SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+    TileDefinition *tile_def = &this->tile_definitions[this->tiles[i].index];
+    SDL_Rect texture_coords = {tile_def->x, tile_def->y, tile_def->w, tile_def->h};
+    SDL_Rect screen_coords  = {x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT};
 
-#if 0
-    if (this->is_tile_solid(x, y))
-      SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-    else
-      SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
-#endif
-
-
-    SDL_RenderFillRect (renderer, &r);
+    SDL_RenderCopy(renderer, this->tileset_texture,
+                   &texture_coords, &screen_coords);
   }
 
 
 
   // Debug: Draw tile borders
+#if 0
   SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
   for (unsigned int x = 1; x < width_in_tiles; x ++) {
     SDL_RenderDrawLine(renderer, x * 32, 0, x * 32, height_in_tiles * 32);
@@ -60,6 +49,7 @@ void Level::render(SDL_Renderer *renderer) {
   for (unsigned int y = 1; y < height_in_tiles; y ++) {
     SDL_RenderDrawLine(renderer, 0, y * 32, width_in_tiles * 32, y * 32);
   }
+#endif
 }
 
 void Level::load(const std::string &filename, SDL_Renderer *renderer) {
@@ -93,6 +83,28 @@ void Level::load(const std::string &filename, SDL_Renderer *renderer) {
   SDL_FreeSurface(bg_surface);
   assert(bg_texture != nullptr);
 
+  // Parse tileset
+  // TODO: We might want to just save tilesets in their own file
+  auto tileset_obj = root_obj["tileset"].get<picojson::object>();
+  std::string tileset_image = "data/" + tileset_obj["image"].get<std::string>();
+  SDL_Surface *tiledef_surface = IMG_Load(tileset_image.c_str());
+  this->tileset_texture = SDL_CreateTextureFromSurface(renderer, tiledef_surface);
+  SDL_FreeSurface(tiledef_surface);
+  assert(tileset_texture != nullptr);
+
+  auto tiledef_array = tileset_obj["tiles"].get<picojson::array>();
+  this->tileset_size = tiledef_array.size();
+  this->tile_definitions = new TileDefinition[tileset_size];
+
+  unsigned int tiledef_id = 0;
+  for (auto t : tiledef_array) {
+    auto tile_arr = t.get<picojson::array>();
+    this->tile_definitions[tiledef_id].x = static_cast<int>(tile_arr[0].get<double>());
+    this->tile_definitions[tiledef_id].y = static_cast<int>(tile_arr[1].get<double>());
+    this->tile_definitions[tiledef_id].w = static_cast<int>(tile_arr[2].get<double>());
+    this->tile_definitions[tiledef_id].h = static_cast<int>(tile_arr[3].get<double>());
+    tiledef_id ++;
+  }
 
   auto tiles_array = root_obj["tiles"].get<picojson::array>();
   int cur_row = 0;

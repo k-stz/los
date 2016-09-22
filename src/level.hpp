@@ -12,6 +12,10 @@ struct Tile {
   int index;
 };
 
+struct TileDefinition {
+  int x, y, w, h;
+};
+
 class Level {
 public:
 
@@ -29,6 +33,9 @@ private:
   SDL_Texture *bg_texture = nullptr;
 
   Tile *tiles;
+  TileDefinition *tile_definitions;
+  unsigned int tileset_size;
+  SDL_Texture *tileset_texture = nullptr;
 
   void load(const std::string &filename, SDL_Renderer *renderer);
 };
