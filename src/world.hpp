@@ -6,6 +6,7 @@
 #include <SDL2/SDL_ttf.h>
 
 #include "level.hpp"
+#include "player.hpp"
 
 class World {
 public:
@@ -22,7 +23,8 @@ private:
   TTF_Font *default_font;
 
   // Current game state
-  Level *level;
+  Level  *level;
+  Player *player;
 };
 
 #endif

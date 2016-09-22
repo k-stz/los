@@ -13,6 +13,7 @@ FILES = \
 	src/world.cpp \
 	src/level.cpp \
 	src/entity.cpp \
+	src/player.cpp
 
 
 build: $(FILES)

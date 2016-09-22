@@ -9,6 +9,7 @@ World::World(SDL_Renderer *renderer) {
   }
 
   this->level = new Level("data/level1.json", renderer);
+  this->player = new Player(level);
 }
 
 // delta in milliseconds
@@ -25,10 +26,12 @@ void World::update(unsigned int delta) {
 
 
   level->update(delta);
+  player->update(delta);
 }
 
 void World::render(SDL_Renderer *renderer) {
   level->render(renderer);
+  player->render(renderer);
 
 
   // TODO: Update all this only once a second
