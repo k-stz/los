@@ -27,7 +27,7 @@ void Level::render(SDL_Renderer *renderer) {
       continue;
 
     int y =  i / width_in_tiles;
-    int x = i - (y * height_in_tiles);
+    int x = i - (y * width_in_tiles);
 
     // TODO: Add some definition of tiles and use those instead
     SDL_Rect r = {x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT};

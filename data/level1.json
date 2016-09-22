@@ -1,7 +1,7 @@
 {
   "name" : "Level1 Test",
-  "width_in_tiles" : 20,
-  "height_in_tiles" : 20,
+  "width_in_tiles" : 32,
+  "height_in_tiles" : 24,
 
   "background" : "level1_bg.png",
   "tiles" : [
