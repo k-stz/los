@@ -2,6 +2,9 @@
 
 #include <iostream>
 
+
+const float MAX_FORCE = 10.0f;
+
 // TODO: replace with actual size
 int width = 32;
 int height = 32;
@@ -19,7 +22,7 @@ void Player::input(Input *input) {
     } else if (input->keycode == SDLK_LEFT) {
       apply_force(vec2(-0.1, 0));
     } else if (input->keycode == SDLK_SPACE) {
-      apply_force(vec2(0, -0.1));
+      apply_force(vec2(0, -0.2));
     }
   }
 }
@@ -46,6 +49,9 @@ void Player::update(unsigned int delta) {
 
   if (touches_ground)
     apply_force(vec2(- current_force.x / 100, 0)); // Friction!
+
+
+  this->current_force.min_all(MAX_FORCE);
 }
 
 void Player::render(SDL_Renderer *renderer) {

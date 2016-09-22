@@ -37,6 +37,11 @@ public:
     os << "vec2(" << m.x << ", " << m.y << ")";
     return os;
   }
+
+  void min_all(float min) {
+    this->x = std::min(x, min);
+    this->y = std::min(y, min);
+  }
 };
 
 #endif

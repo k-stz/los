@@ -114,7 +114,7 @@ bool Level::is_tile_solid(unsigned int x, unsigned int y) {
 
   if (y == 0)
     return true;
-  else if (y == 19)
+  else if (y == 19 && x <= 10)
     return true;
 
   return false;
