@@ -2,7 +2,7 @@
 #include <SDL2/SDL_ttf.h>
 #include <iostream>
 #include "src/world.hpp"
-#include "src/events.cpp"
+#include "src/util.hpp"
 
 const int SCREEN_WIDTH = 1024;
 const int SCREEN_HEIGHT = 768;
@@ -48,13 +48,30 @@ int main( int argc, char* args[]) {
 
 
   world = new World(renderer);
-  // TODO: We should do event handling somewhere else
   SDL_Event event;
   unsigned int last_time = SDL_GetTicks();
   unsigned int current_time;
   while (running) {
+    while(SDL_PollEvent(&event)) {
+      Input input;
+      switch(event.type) {
+        case SDL_KEYDOWN:
+          input.down = true;
+          input.keycode = event.key.keysym.sym;
+          break;
+        case SDL_KEYUP:
+          input.up = true;
+          input.keycode = event.key.keysym.sym;
+          break;
+        case SDL_QUIT:
+          running = false;
+          break;
+      }
 
-    running = handleEvents(event, window);
+      if (running) {
+        world->input(&input);
+      }
+    }
 
     current_time = SDL_GetTicks();
     unsigned int frame_time = current_time - last_time;
@@ -68,6 +85,8 @@ int main( int argc, char* args[]) {
     last_time = current_time;
 
   }
+
+  delete world;
 
   quit(window);
 

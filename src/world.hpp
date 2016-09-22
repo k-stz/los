@@ -7,11 +7,13 @@
 
 #include "level.hpp"
 #include "player.hpp"
+#include "util.hpp"
 
 class World {
 public:
   World(SDL_Renderer *renderer);
 
+  void input(Input *input);
   void update(unsigned int delta);
   void render(SDL_Renderer *renderer);
 

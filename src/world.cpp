@@ -12,6 +12,11 @@ World::World(SDL_Renderer *renderer) {
   this->player = new Player(level);
 }
 
+void World::input(Input *input) {
+  if (input->down && input->keycode == SDLK_SPACE)
+     std::cout << "space down" << std::endl;
+}
+
 // delta in milliseconds
 void World::update(unsigned int delta) {
   this->fps_counter += delta;
