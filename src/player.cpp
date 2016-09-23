@@ -16,18 +16,27 @@ Player::Player(Level *level) {
 }
 
 void Player::input(Input *input) {
-  if (input->down) {
-    if (input->keycode == SDLK_RIGHT) {
-      apply_force(vec2(0.1, 0));
-    } else if (input->keycode == SDLK_LEFT) {
-      apply_force(vec2(-0.1, 0));
-    } else if (input->keycode == SDLK_SPACE) {
-      apply_force(vec2(0, -(current_force.y + 0.3)));
-    }
+  if (input->keycode == SDLK_RIGHT) {
+    right_pressed = input->down;
+  } else if (input->keycode == SDLK_LEFT) {
+    left_pressed = input->down;
+  } else if (input->keycode == SDLK_SPACE) {
+    space_pressed = true;
   }
 }
 
 void Player::update(unsigned int delta) {
+  if (left_pressed)
+    apply_force(vec2(-(delta / 300.0f), 0));
+  else if (right_pressed)
+    apply_force(vec2(delta / 300.0f, 0));
+
+  if (space_pressed) {
+    apply_force(vec2(0, -(current_force.y + (delta / 10.0f))));
+    space_pressed = false;
+  }
+
+
   // Will update the position according to the currently applied force
   // position attribute is inherited from entity(.hpp)
   Entity::update(delta);
@@ -65,6 +74,8 @@ void Player::update(unsigned int delta) {
   if (touches_ground) {
     this->current_force.y = 0;
     apply_force(vec2(- current_force.x / 100, 0)); // Friction!
+  } else {
+    current_force.x *= 0.98; // In air
   }
 
   if (touches_side) {

@@ -17,6 +17,9 @@ public:
 
 private:
   Level *level;
+  bool left_pressed = false;
+  bool right_pressed = false;
+  bool space_pressed = false;
 };
 
 #endif
