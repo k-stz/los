@@ -20,6 +20,9 @@ private:
   bool left_pressed = false;
   bool right_pressed = false;
   bool space_pressed = false;
+
+  const int width  = 16;
+  const int height = 16;
 };
 
 #endif

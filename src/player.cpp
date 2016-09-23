@@ -3,11 +3,7 @@
 #include <iostream>
 
 
-const float MAX_FORCE = 10.0f;
-
-// TODO: replace with actual size
-int width = 32;
-int height = 32;
+const float MAX_FORCE = 6.0f;
 
 Player::Player(Level *level) {
   this->level = level;
@@ -32,7 +28,7 @@ void Player::update(unsigned int delta) {
     apply_force(vec2(delta / 300.0f, 0));
 
   if (space_pressed) {
-    apply_force(vec2(0, -(current_force.y + (delta / 10.0f))));
+    apply_force(vec2(0, -(current_force.y + (delta / 20.0f))));
     space_pressed = false;
   }
 
@@ -54,14 +50,14 @@ void Player::update(unsigned int delta) {
   if (level->is_tile_solid(left_x, bottom_y) ||
       level->is_tile_solid(right_x, bottom_y)) {
     // move up, reset y force
-    this->position.y = (bottom_y - 1) * 32;
+    this->position.y = bottom_y * 32 - this->height;
     touches_ground = true;
   }
 
   bool touches_side = false;
   if ((touches_ground && level->is_tile_solid(right_x, top_y)) ||
       (!touches_ground && level->is_tile_solid(right_x, bottom_y))) {
-    this->position.x = (right_x - 1) * 32;
+    this->position.x = right_x * 32 - this->width;
     touches_side = true;
   }
 
