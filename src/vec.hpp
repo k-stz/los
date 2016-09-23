@@ -21,11 +21,18 @@ public:
   }
 
 
+
   vec2 operator * (const float f) {
     vec2 other;
     other.x = this->x * f;
     other.y = this->y * f;
     return other;
+  }
+
+  vec2& operator *= (const float f) {
+    this->x *= f;
+    this->y *= f;
+    return *this;
   }
 
   friend vec2 operator + (vec2 lhs, const vec2& rhs) {
