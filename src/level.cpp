@@ -134,8 +134,7 @@ bool Level::is_tile_solid(unsigned int x, unsigned int y) {
   assert(y >= 0);
   assert(y < height_in_tiles);
 
-  // XXX Replace this
-  return tiles[y * width_in_tiles + x].index == 2;
+  return tiles[y * width_in_tiles + x].index != -1;
 }
 
 
