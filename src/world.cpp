@@ -2,7 +2,8 @@
 
 #include <iostream>
 
-const vec2 GRAVITY = vec2(0, 0.000481);
+vec2 GRAVITY = vec2(0, 0.000481);
+const bool draw_forces = true;
 
 World::World(SDL_Renderer *renderer) {
   this->default_font = TTF_OpenFont("DejaVuSans.ttf", 20);
@@ -36,7 +37,7 @@ void World::update(unsigned int delta) {
     this->fps_counter = 0;
   }
 
-  player->apply_force(GRAVITY);
+  player->apply_force(GRAVITY * (float)delta);
 
   level->update(delta);
   player->update(delta);
@@ -45,6 +46,15 @@ void World::update(unsigned int delta) {
 void World::render(SDL_Renderer *renderer) {
   level->render(renderer);
   player->render(renderer);
+
+  if (draw_forces) {
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_RenderDrawLine(renderer,
+                       player->position.x + (player->width / 2),
+                       player->position.y + (player->height / 2),
+                       player->position.x + (player->width / 2) + player->current_force.x * 100,
+                       player->position.y + (player->height / 2) + player->current_force.y * 100);
+  }
 
 
   // TODO: Update all this only once a second

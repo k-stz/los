@@ -8,6 +8,9 @@
 class Entity {
 public:
   vec2 position;
+  vec2 current_force;
+  int width;
+  int height;
   bool is_static = true;
 
   virtual ~Entity(){}
@@ -17,9 +20,6 @@ public:
   virtual void render(SDL_Renderer *renderer) = 0;
 
   void apply_force(vec2 force);
-
-protected:
-  vec2 current_force;
 
 private:
 };
