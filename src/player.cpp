@@ -1,16 +1,17 @@
 #include "player.hpp"
 
 #include <iostream>
+#include <cstdlib>
 
 
 const float MAX_FORCE = 6.0f;
 
 Player::Player(Level *level) {
   this->level = level;
-  this->position.x = 120;
-  this->position.y = 80;
-  this->width = 16;
-  this->height = 16;
+  this->position.x = 0;
+  this->position.y = 0;
+  this->width  = 32;
+  this->height = 32;
 }
 
 void Player::input(Input *input) {
@@ -37,52 +38,96 @@ void Player::update(unsigned int delta) {
 
   // Will update the position according to the currently applied force
   // position attribute is inherited from entity(.hpp)
-  Entity::update(delta);
-
+  vec2 new_pos = this->position + (this->current_force * static_cast<float>(delta));
 
   // collision detection
+  int left_x   =  new_pos.x / 32.0f;
+  int right_x  = (new_pos.x - 1.0f + width) / 32.0f;
+  int top_y    =  new_pos.y / 32.0f;
+  int bottom_y = (new_pos.y - 1 + height) / 32.0f;
 
-  int left_x   = position.x / 32;
-  int right_x  = (position.x + width) / 32;
-  int top_y    = position.y / 32;
-  int bottom_y = (position.y + height) / 32;
+  bool touches_left   = false;
+  bool touches_right  = false;
+  bool touches_bottom = false;
 
+
+
+  // Simple case first: The center of each side
   // bottom
-  bool touches_ground = false;
-  if (level->is_tile_solid(left_x, bottom_y) ||
-      level->is_tile_solid(right_x, bottom_y)) {
-    // move up, reset y force
-    this->position.y = bottom_y * 32 - this->height;
-    touches_ground = true;
+  if (level->is_tile_solid((new_pos.x + (width / 2)) / 32, bottom_y)) {
+    current_force.y = 0;
+    new_pos.y = top_y * 32;
+    top_y    =  new_pos.y / 32.0f;
+    bottom_y = (new_pos.y - 1 + height) / 32.0f;
+    touches_bottom = true;
   }
 
-  bool touches_side = false;
-  if ((touches_ground && level->is_tile_solid(right_x, top_y)) ||
-      (!touches_ground && level->is_tile_solid(right_x, bottom_y))) {
-    this->position.x = right_x * 32 - this->width;
-    touches_side = true;
+  // left
+  if (level->is_tile_solid(left_x, (new_pos.y + (height / 2)) / 32)) {
+    current_force.x = 0;
+    new_pos.x = (left_x + 1) * 32;
+    left_x   =  new_pos.x / 32.0f;
+    right_x  = (new_pos.x - 1.0f + width) / 32.0f;
+    touches_left = true;
   }
 
-  if ((touches_ground && level->is_tile_solid(left_x, top_y)) ||
-      (!touches_ground && level->is_tile_solid(left_x, bottom_y))) {
-    this->position.x = (left_x + 1) * 32;
-    touches_side = true;
+  //right
+  if (level->is_tile_solid(right_x, (new_pos.y + (height / 2)) / 32)) {
+    current_force.x = 0;
+    new_pos.x = left_x * 32;
+    left_x   =  new_pos.x / 32.0f;
+    right_x  = (new_pos.x - 1.0f + width) / 32.0f;
+    touches_right = true;
   }
 
-  if (touches_ground) {
+
+  // Now check the same thing again but with both edges on each side
+
+  const bool _touches_right  = level->is_tile_solid(right_x, top_y) ||
+                              level->is_tile_solid(right_x, bottom_y);
+  if (_touches_right) {
+    current_force.x = 0;
+    new_pos.x = left_x * 32;
+    top_y    =  new_pos.y / 32.0f;
+    bottom_y = (new_pos.y - 1 + height) / 32.0f;
+    touches_right = true;
+  }
+
+  const bool _touches_left = level->is_tile_solid(left_x, top_y) ||
+                            level->is_tile_solid(left_x, bottom_y);
+  if (_touches_left) {
+    current_force.x = 0;
+    new_pos.x = left_x * 32;
+    left_x   =  new_pos.x / 32.0f;
+    right_x  = (new_pos.x - 1.0f + width) / 32.0f;
+    touches_left = true;
+  }
+
+
+  bool _touches_bottom = level->is_tile_solid(left_x, bottom_y) ||
+                        level->is_tile_solid(right_x, bottom_y);
+  if (_touches_bottom) {
+    current_force.y = 0;
+    new_pos.y = top_y * 32;
+    left_x   =  new_pos.x / 32.0f;
+    right_x  = (new_pos.x - 1.0f + width) / 32.0f;
+    touches_bottom = true;
+  }
+
+  if (touches_bottom) {
     this->current_force.y = 0;
     apply_force(vec2(- current_force.x / 100, 0)); // Friction!
   } else {
     current_force.x *= 0.98; // In air
   }
 
-  if (touches_side) {
+  if (touches_left || touches_right) {
     this->current_force.x = 0;
     apply_force(vec2(0, - current_force.y / 100)); // Friction!
   }
 
-
   this->current_force.min_all(MAX_FORCE);
+  this->position = new_pos;
 }
 
 void Player::render(SDL_Renderer *renderer) {

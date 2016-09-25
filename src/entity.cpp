@@ -6,7 +6,7 @@ void Entity::input(Input *input) {
 }
 
 void Entity::update(unsigned int delta) {
-  this->position += (this->current_force * (delta));
+  //this->position += (this->current_force * delta);
 }
 
 void Entity::apply_force(vec2 force) {
