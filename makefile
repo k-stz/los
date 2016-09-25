@@ -17,7 +17,7 @@ FILES = \
 
 
 build: $(FILES)
-	$(CXX) $(CFLAGS) $(LDFLAGS) $^ -o bin/main
+	$(CXX) $^ -o bin/main $(CFLAGS) $(LDFLAGS) 
 
 run-main:
 	./bin/main
