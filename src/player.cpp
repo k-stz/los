@@ -34,7 +34,7 @@ void Player::update(unsigned int delta) {
     apply_force(vec2(delta / 300.0f, 0));
 
   if (space_pressed) {
-    apply_force(vec2(0, -(current_force.y + (delta / 3.0f))));
+    apply_force(vec2(0, -(current_force.y + (delta / 10.0f))));
     space_pressed = false;
   }
 
@@ -53,14 +53,6 @@ void Player::update(unsigned int delta) {
   bool touches_right  = false;
   bool touches_bottom = false;
 
-  // TODO: remove this
-  if (input_->keycode == SDLK_p) {
-    printf("left_x: %d\n", left_x);
-    printf("right_x: %d\n", right_x);
-    printf("top_y: %d\n", top_y);
-    printf("bottom_y: %d\n", bottom_y);
-
-  }
   // position.x=0, position.y=0 is top left
 
   // Simple case first: The center of each side
@@ -100,7 +92,7 @@ void Player::update(unsigned int delta) {
     touches_right = true;
   }
 
-  // TODO: broken?
+  // TODO: still needed?
   // Now check the same thing again but with both edges on each side
 
   // const bool _touches_right  = level->is_tile_solid(right_x, top_y) ||
@@ -139,7 +131,7 @@ void Player::update(unsigned int delta) {
     this->current_force.y = 0;
     apply_force(vec2(- current_force.x / 100, 0)); // Friction!
   } else {
-    // TODO needs delta factor
+    // TODO: wildly different behaviour on faster/slower cpu
     current_force.x *= 1.0 - (delta * 0.02); // In air
   }
 

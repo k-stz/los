@@ -26,6 +26,7 @@ void tests(Input *input, Player *player, Level *level) {
   // width_in_tiles = 32
   // height_in_tiles = 24
   int x, y;
+  // testing the is_tile_solid() method
   if (input->down == true) {
     if (input->keycode == SDLK_s) {
       while(1) {
@@ -38,7 +39,6 @@ void tests(Input *input, Player *player, Level *level) {
     }
     if (input->keycode == SDLK_e) {
       printf("executing experiments----------!\n");
-      // level fucking add autocompletion and slot lookup
       printf("player x: %f, y: %f\n", player->position.x, player->position.y);
       // for (int i = 0; i < 32; i++) {
       // 	for (int j = 0; j < 24; j ++) {
