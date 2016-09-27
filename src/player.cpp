@@ -31,7 +31,7 @@ void Player::update(unsigned int delta) {
     apply_force(vec2(delta / 300.0f, 0));
 
   if (space_pressed) {
-    apply_force(vec2(0, -(current_force.y + (delta / 20.0f))));
+    apply_force(vec2(0, -(current_force.y + (delta / 2.0f))));
     space_pressed = false;
   }
 
@@ -54,7 +54,13 @@ void Player::update(unsigned int delta) {
 
   // Simple case first: The center of each side
   // bottom
+  // printf("level->is_tile_solid(%d, %d) ==> %d\n",
+  // 	 (new_pos.x + (width / 2)) / 32, 
+  // 	 bottom_y,
+  // 	 level->is_tile_solid((new_pos.x + (width / 2)) / 32, bottom_y));
   if (level->is_tile_solid((new_pos.x + (width / 2)) / 32, bottom_y)) {
+    // printf("yes, this is never reached, %d %d", (new_pos.x + (width / 2)),
+    // 	   bottom_y);
     current_force.y = 0;
     new_pos.y = top_y * 32;
     top_y    =  new_pos.y / 32.0f;
@@ -118,6 +124,7 @@ void Player::update(unsigned int delta) {
     this->current_force.y = 0;
     apply_force(vec2(- current_force.x / 100, 0)); // Friction!
   } else {
+    // TODO needs delta factor
     current_force.x *= 0.98; // In air
   }
 

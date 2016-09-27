@@ -21,14 +21,46 @@ World::~World() {
   TTF_CloseFont(default_font);
 }
 
+// just for debugging
+void tests(Input *input, Player *player, Level *level) {
+  // width_in_tiles = 32
+  // height_in_tiles = 24
+  int x, y;
+  if (input->down == true) {
+    if (input->keycode == SDLK_s) {
+      while(1) {
+	std::cin >> x;
+	std::cin >> y;
+	printf("level->is_tile_solid(%d,%d): %d\n", 
+	       x, y, level->is_tile_solid(x,y));
+
+      }
+    }
+    if (input->keycode == SDLK_e) {
+      printf("executing experiments----------!\n");
+      // level fucking add autocompletion and slot lookup
+      printf("player x: %f, y: %f\n", player->position.x, player->position.y);
+      // for (int i = 0; i < 32; i++) {
+      // 	for (int j = 0; j < 24; j ++) {
+      // 	  printf("level->is_tile_solid(%d,%d): %d\n", 
+      // 		 i, j, level->is_tile_solid(i,j));
+      // 	}
+      // }
+    }
+  }
+  //  printf("%d\n", input->keycode);
+}
+
 void World::input(Input *input) {
+  // TODO add UI->input (leveleditor, entering menu and debug mode)
+  tests(input, player, level);
   player->input(input);
 }
 
-// delta in milliseconds
+// delta in milliseconds - time that has passed since the last call to update() 
 void World::update(unsigned int delta) {
-  this->fps_counter += delta;
-  this->frame_counter ++;
+  this->fps_counter += delta; // accumulate for fps_coutner >= 1000 test
+  this->frame_counter ++; // as update() gets called once per frame
 
   // One second passed
   if (fps_counter >= 1000) {
@@ -37,9 +69,11 @@ void World::update(unsigned int delta) {
     this->fps_counter = 0;
   }
 
+  // all this does is add the players current_force vector to the arg vector i.e. _position
+  // isn't being changed yet!_ only in update() where also collision detection takes place
   player->apply_force(GRAVITY * (float)delta);
 
-  level->update(delta);
+  level->update(delta); // for scrolling, moving platforms?
   player->update(delta);
 }
 

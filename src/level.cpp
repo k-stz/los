@@ -129,6 +129,7 @@ void Level::load(const std::string &filename, SDL_Renderer *renderer) {
 }
 
 bool Level::is_tile_solid(unsigned int x, unsigned int y) {
+  // width_in_tiles and height_... are read from the data/.json file!
   assert(x >= 0);
   assert(x < width_in_tiles);
   assert(y >= 0);
