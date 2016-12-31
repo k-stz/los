@@ -13,8 +13,7 @@ FILES = \
 	src/world.cpp \
 	src/level.cpp \
 	src/entity.cpp \
-	src/player.cpp \
-	src/fps_counter.hpp
+	src/player.cpp
 
 
 build: $(FILES)
