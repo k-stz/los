@@ -59,15 +59,7 @@ void World::input(Input *input) {
 
 // delta in milliseconds - time that has passed since the last call to update()
 void World::update(unsigned int delta) {
-  this->fps_counter += delta; // accumulate for fps_coutner >= 1000 test
-  this->frame_counter ++; // as update() gets called once per frame
-
-  // One second passed
-  if (fps_counter >= 1000) {
-    this->current_fps = this->frame_counter;
-    this->frame_counter = 0;
-    this->fps_counter = 0;
-  }
+  fps_counter.update(delta);
 
   // all this does is add the players current_force vector to the arg vector i.e. _position
   // isn't being changed yet!_ only in update() where also collision detection takes place
@@ -93,7 +85,7 @@ void World::render(SDL_Renderer *renderer) {
 
   // TODO: Update all this only once a second
   char buffer[20];
-  sprintf(buffer, "FPS: %d", this->current_fps);
+  sprintf(buffer, "FPS: %d", fps_counter.current_fps);
   SDL_Color color = {0, 255, 0, 255};
   SDL_Surface *fps_surface = TTF_RenderText_Solid(default_font, buffer, color);
   SDL_Texture *fps_texture = SDL_CreateTextureFromSurface(renderer, fps_surface);
