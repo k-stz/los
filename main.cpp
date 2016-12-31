@@ -57,7 +57,7 @@ int main( int argc, char* args[]) {
   unsigned int current_time;
   while (running) {
     while(SDL_PollEvent(&event)) {
-      Input input; // first we collect the PollEvent inputs in var "input"
+      Input input = {}; // first we collect the PollEvent inputs in var "input"
       switch(event.type) {
         case SDL_KEYDOWN:
           input.down = true;

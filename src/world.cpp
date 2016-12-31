@@ -61,7 +61,6 @@ void World::input(Input *input) {
 void World::update(unsigned int delta) {
   fps_counter.update(delta);
 
-  //player->apply_force(GRAVITY * (float)delta);
   player->apply_force(GRAVITY, delta);
 
   level->update(delta);
