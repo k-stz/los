@@ -4,8 +4,10 @@
 #include "src/world.hpp"
 #include "src/util.hpp"
 
-const int SCREEN_WIDTH = 1024;
+const int SCREEN_WIDTH  = 1024;
 const int SCREEN_HEIGHT = 768;
+
+const int TARGET_FPS    = 60;
 
 // TODO put somewhere else
 void quit(SDL_Window* window) {
@@ -86,6 +88,11 @@ int main( int argc, char* args[]) {
     SDL_UpdateWindowSurface (window);
     last_time = current_time;
 
+    // Burn CPU until we hit the desired FPS
+    unsigned int time_per_frame = 1000 / TARGET_FPS;
+    while (SDL_GetTicks() < current_time + time_per_frame) {
+      // Idle
+    }
   }
 
   delete world;
