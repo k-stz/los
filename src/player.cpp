@@ -3,9 +3,6 @@
 #include <iostream>
 #include <cstdlib>
 
-
-static Input *input_;
-
 const float MAX_FORCE = 6.0f;
 
 Player::Player(Level *level) {
@@ -17,7 +14,6 @@ Player::Player(Level *level) {
 }
 
 void Player::input(Input *input) {
-  input_ = input;
   if (input->keycode == SDLK_RIGHT) {
     right_pressed = input->down;
   } else if (input->keycode == SDLK_LEFT) {
@@ -27,7 +23,6 @@ void Player::input(Input *input) {
   }
 }
 
-#if 1
 void Player::update(unsigned int delta) {
   if (left_pressed)
     apply_force(vec2(-0.1, 0), delta);
@@ -141,7 +136,7 @@ void Player::update(unsigned int delta) {
   this->current_force.min_all(MAX_FORCE); // clamping the force
   this->position = new_pos; // the result of collision detection and response
 }
-#endif
+
 void Player::render(SDL_Renderer *renderer) {
   SDL_Rect r = { static_cast<int>(position.x),
                  static_cast<int>(position.y),

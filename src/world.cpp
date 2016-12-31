@@ -6,7 +6,7 @@ static const vec2 GRAVITY = vec2(0, 0.00981);
 const bool draw_forces = true;
 
 World::World(SDL_Renderer *renderer) {
-  this->default_font = TTF_OpenFont("DejaVuSans.ttf", 20);
+  this->default_font = TTF_OpenFont("DejaVuSans.ttf", 16);
   if (default_font == NULL) {
     std::cout << "Couldn't load font: " << TTF_GetError() << std::endl;
   }
@@ -85,11 +85,11 @@ void World::render(SDL_Renderer *renderer) {
   char buffer[20];
   sprintf(buffer, "FPS: %d", fps_counter.current_fps);
   SDL_Color color = {0, 255, 0, 255};
-  SDL_Surface *fps_surface = TTF_RenderText_Solid(default_font, buffer, color);
+  SDL_Surface *fps_surface = TTF_RenderText_Blended(default_font, buffer, color);
   SDL_Texture *fps_texture = SDL_CreateTextureFromSurface(renderer, fps_surface);
   SDL_FreeSurface(fps_surface);
 
-  SDL_Rect fps_pos = {0, 0};
+  SDL_Rect fps_pos = {10, 10};
   SDL_QueryTexture(fps_texture, NULL, NULL, &fps_pos.w, &fps_pos.h);
   SDL_RenderCopy(renderer, fps_texture, NULL, &fps_pos);
   SDL_DestroyTexture(fps_texture);
