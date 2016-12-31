@@ -30,10 +30,10 @@ void tests(Input *input, Player *player, Level *level) {
   if (input->down == true) {
     if (input->keycode == SDLK_s) {
       while(1) {
-	std::cin >> x;
-	std::cin >> y;
-	printf("level->is_tile_solid(%d,%d): %d\n", 
-	       x, y, level->is_tile_solid(x,y));
+        std::cin >> x;
+        std::cin >> y;
+        printf("level->is_tile_solid(%d,%d): %d\n",
+               x, y, level->is_tile_solid(x,y));
 
       }
     }
@@ -42,7 +42,7 @@ void tests(Input *input, Player *player, Level *level) {
       printf("player x: %f, y: %f\n", player->position.x, player->position.y);
       // for (int i = 0; i < 32; i++) {
       // 	for (int j = 0; j < 24; j ++) {
-      // 	  printf("level->is_tile_solid(%d,%d): %d\n", 
+      // 	  printf("level->is_tile_solid(%d,%d): %d\n",
       // 		 i, j, level->is_tile_solid(i,j));
       // 	}
       // }
@@ -57,7 +57,7 @@ void World::input(Input *input) {
   player->input(input);
 }
 
-// delta in milliseconds - time that has passed since the last call to update() 
+// delta in milliseconds - time that has passed since the last call to update()
 void World::update(unsigned int delta) {
   this->fps_counter += delta; // accumulate for fps_coutner >= 1000 test
   this->frame_counter ++; // as update() gets called once per frame
