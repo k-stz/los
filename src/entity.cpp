@@ -9,6 +9,6 @@ void Entity::update(unsigned int delta) {
   //this->position += (this->current_force * delta);
 }
 
-void Entity::apply_force(vec2 force) {
-  this->current_force += force;
+void Entity::apply_force(vec2 force, unsigned int delta) {
+  this->current_force += force * (delta / 10.0f);
 }

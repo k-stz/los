@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-vec2 GRAVITY = vec2(0, 0.000481);
+static const vec2 GRAVITY = vec2(0, 0.00981);
 const bool draw_forces = true;
 
 World::World(SDL_Renderer *renderer) {
@@ -61,11 +61,10 @@ void World::input(Input *input) {
 void World::update(unsigned int delta) {
   fps_counter.update(delta);
 
-  // all this does is add the players current_force vector to the arg vector i.e. _position
-  // isn't being changed yet!_ only in update() where also collision detection takes place
-  player->apply_force(GRAVITY * (float)delta);
+  //player->apply_force(GRAVITY * (float)delta);
+  player->apply_force(GRAVITY, delta);
 
-  level->update(delta); // for scrolling, moving platforms?
+  level->update(delta);
   player->update(delta);
 }
 

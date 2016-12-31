@@ -27,20 +27,19 @@ void Player::input(Input *input) {
   }
 }
 
+#if 1
 void Player::update(unsigned int delta) {
   if (left_pressed)
-    apply_force(vec2(-(delta / 300.0f), 0));
+    apply_force(vec2(-0.1, 0), delta);
   else if (right_pressed)
-    apply_force(vec2(delta / 300.0f, 0));
+    apply_force(vec2(+0.1, 0), delta);
 
   if (space_pressed) {
-    apply_force(vec2(0, -(current_force.y + (delta / 10.0f))));
+    apply_force(vec2(0, -0.13), delta);
     space_pressed = false;
   }
 
 
-  // Will update the position according to the currently applied force
-  // position attribute is inherited from entity(.hpp)
   vec2 new_pos = this->position + (this->current_force * static_cast<float>(delta));
 
   // collision detection
@@ -129,21 +128,20 @@ void Player::update(unsigned int delta) {
 
   if (touches_bottom) {
     this->current_force.y = 0;
-    apply_force(vec2(- current_force.x / 100, 0)); // Friction!
+    apply_force(vec2(- current_force.x / 100, 0), delta); // Friction!
   } else {
-    // TODO: wildly different behaviour on faster/slower cpu
     current_force.x *= 1.0 - (delta * 0.02); // In air
   }
 
   if (touches_left || touches_right) {
     this->current_force.x = 0;
-    apply_force(vec2(0, - current_force.y / 100)); // Friction!
+    apply_force(vec2(0, - current_force.y / 100), delta); // Friction!
   }
 
   this->current_force.min_all(MAX_FORCE); // clamping the force
   this->position = new_pos; // the result of collision detection and response
 }
-
+#endif
 void Player::render(SDL_Renderer *renderer) {
   SDL_Rect r = { static_cast<int>(position.x),
                  static_cast<int>(position.y),

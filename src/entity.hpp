@@ -19,7 +19,7 @@ public:
   virtual void update(unsigned int delta);
   virtual void render(SDL_Renderer *renderer) = 0;
 
-  void apply_force(vec2 force);
+  void apply_force(vec2 force, unsigned int delta);
 
 private:
 };
