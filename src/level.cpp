@@ -122,6 +122,8 @@ void Level::load(const std::string &filename, SDL_Renderer *renderer) {
   for (auto r : tiles_array) {
     auto row = r.get<picojson::array>();
 
+    assert(row.size() <= width_in_tiles);
+
     int cur_col = 0;
     for (auto c : row) {
       int tile_id = static_cast<int>(c.get<double>());
