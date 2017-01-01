@@ -46,6 +46,61 @@ void Player::update(unsigned int delta) {
   bool touches_right  = false;
   bool touches_bottom = false;
 
+  // bottom
+  if (level->is_tile_solid(left_x, bottom_y) ||
+      level->is_tile_solid(right_x, bottom_y)) {
+    new_pos.y = bottom_y * 32 - height;
+    touches_bottom = true;
+
+    top_y    = new_pos.y / 32.0f;
+    bottom_y = (new_pos.y - 1 + height) / 32.0f;
+  }
+
+  // top
+  if (level->is_tile_solid(left_x, top_y) ||
+      level->is_tile_solid(right_x, top_y)) {
+    new_pos.y = top_y * 32 + TILE_HEIGHT;
+    current_force.y = 0;
+
+    top_y    = new_pos.y / 32.0f;
+    bottom_y = (new_pos.y - 1 + height) / 32.0f;
+  }
+
+
+  // left
+  for (int i = top_y; i <= bottom_y; i ++) {
+    touches_left |= level->is_tile_solid(left_x, i);
+  }
+  if (touches_left) {
+    new_pos.x = (left_x + 1) * 32;
+    left_x   =  new_pos.x / 32.0f;
+    right_x  = (new_pos.x - 1.0f + width) / 32.0f;
+  }
+
+  // right
+  for (int i = top_y; i <= bottom_y; i ++) {
+    touches_right |= level->is_tile_solid(right_x, i);
+  }
+  if (touches_right) {
+    new_pos.x = left_x * 32;
+    left_x   =  new_pos.x / 32.0f;
+    right_x  = (new_pos.x - 1.0f + width) / 32.0f;
+  }
+
+
+  if (touches_bottom) {
+    this->current_force.y = 0;
+    apply_force(vec2(- current_force.x / 100, 0), delta); // Friction!
+  } else {
+    current_force.x *= 1.0 - (delta * 0.02); // In air
+  }
+
+  if (touches_left || touches_right) {
+    this->current_force.x = 0;
+    apply_force(vec2(0, - current_force.y / 100), delta); // Friction!
+  }
+
+#if 0
   // Simple case first: The center of each side
   // bottom
   if (level->is_tile_solid((new_pos.x + (width / 2)) / 32, bottom_y)) {
@@ -83,30 +138,6 @@ void Player::update(unsigned int delta) {
     touches_right = true;
   }
 
-  // TODO: still needed?
-  // Now check the same thing again but with both edges on each side
-
-  // const bool _touches_right  = level->is_tile_solid(right_x, top_y) ||
-  //                             level->is_tile_solid(right_x, bottom_y);
-  // if (_touches_right) {
-  //   current_force.x = 0;
-  //   new_pos.x = left_x * 32;
-  //   top_y    =  new_pos.y / 32.0f;
-  //   bottom_y = (new_pos.y - 1 + height) / 32.0f;
-  //   touches_right = true;
-  // }
-
-  // const bool _touches_left = level->is_tile_solid(left_x, top_y) ||
-  //                           level->is_tile_solid(left_x, bottom_y);
-  // if (_touches_left) {
-  //   current_force.x = 0;
-  //   new_pos.x = left_x * 32;
-  //   left_x   =  new_pos.x / 32.0f;
-  //   right_x  = (new_pos.x - 1.0f + width) / 32.0f;
-  //   touches_left = true;
-  // }
-
-
   // only drop when fully cleared edge
   bool _touches_bottom = level->is_tile_solid(left_x, bottom_y) ||
                          level->is_tile_solid(right_x, bottom_y);
@@ -118,18 +149,7 @@ void Player::update(unsigned int delta) {
     touches_bottom = true;
   }
 
-  if (touches_bottom) {
-    this->current_force.y = 0;
-    apply_force(vec2(- current_force.x / 100, 0), delta); // Friction!
-  } else {
-    current_force.x *= 1.0 - (delta * 0.02); // In air
-  }
-
-  if (touches_left || touches_right) {
-    this->current_force.x = 0;
-    apply_force(vec2(0, - current_force.y / 100), delta); // Friction!
-  }
-
+#endif
   this->current_force.min_all(MAX_FORCE); // clamping the force
   this->position = new_pos; // the result of collision detection and response
 }
