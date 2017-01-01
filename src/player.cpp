@@ -45,22 +45,25 @@ void Player::update(unsigned int delta) {
   bool touches_left   = false;
   bool touches_right  = false;
   bool touches_bottom = false;
+  bool touches_top    = false;
 
   // bottom
-  if (level->is_tile_solid(left_x, bottom_y) ||
-      level->is_tile_solid(right_x, bottom_y)) {
+  for (int i = left_x; i <= right_x; i ++) {
+    touches_bottom |= level->is_tile_solid(i, bottom_y);
+  }
+  if (touches_bottom) {
     new_pos.y = bottom_y * 32 - height;
-    touches_bottom = true;
 
     top_y    = new_pos.y / 32.0f;
     bottom_y = (new_pos.y - 1 + height) / 32.0f;
   }
 
   // top
-  if (level->is_tile_solid(left_x, top_y) ||
-      level->is_tile_solid(right_x, top_y)) {
+  for (int i = left_x; i <= right_x; i ++) {
+    touches_top |= level->is_tile_solid(i, top_y);
+  }
+  if (touches_top) {
     new_pos.y = top_y * 32 + TILE_HEIGHT;
-    current_force.y = 0;
 
     top_y    = new_pos.y / 32.0f;
     bottom_y = (new_pos.y - 1 + height) / 32.0f;
@@ -88,7 +91,7 @@ void Player::update(unsigned int delta) {
   }
 
 
-  if (touches_bottom) {
+  if (touches_bottom || touches_top) {
     this->current_force.y = 0;
     apply_force(vec2(- current_force.x / 100, 0), delta); // Friction!
   } else {
