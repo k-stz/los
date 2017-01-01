@@ -46,15 +46,13 @@ void Player::update(unsigned int delta) {
   bool touches_right  = false;
   bool touches_bottom = false;
 
-  // position.x=0, position.y=0 is top left
-
   // Simple case first: The center of each side
   // bottom
   if (level->is_tile_solid((new_pos.x + (width / 2)) / 32, bottom_y)) {
     current_force.y = 0;
-    new_pos.y = top_y * 32;
     top_y    =  new_pos.y / 32.0f;
     bottom_y = (new_pos.y - 1 + height) / 32.0f;
+    new_pos.y = bottom_y * 32 - height;
     touches_bottom = true;
   }
 
@@ -111,10 +109,10 @@ void Player::update(unsigned int delta) {
 
   // only drop when fully cleared edge
   bool _touches_bottom = level->is_tile_solid(left_x, bottom_y) ||
-                        level->is_tile_solid(right_x, bottom_y);
+                         level->is_tile_solid(right_x, bottom_y);
   if (_touches_bottom) {
     current_force.y = 0;
-    new_pos.y = top_y * 32;
+    new_pos.y = bottom_y * 32 - height;
     left_x   =  new_pos.x / 32.0f;
     right_x  = (new_pos.x - 1.0f + width) / 32.0f;
     touches_bottom = true;
