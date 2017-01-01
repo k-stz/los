@@ -10,7 +10,7 @@ Player::Player(Level *level) {
   this->position.x = 10 * 32;
   this->position.y = 0;
   this->width  = 32;
-  this->height = 32;
+  this->height = 70;
 }
 
 void Player::input(Input *input) {
