@@ -47,6 +47,7 @@ int main( int argc, char* args[]) {
   // use SDL_RENDERER_SOFTWARE on Laptop !
   SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
   SDL_RenderSetLogicalSize(renderer, SCREEN_WIDTH, SCREEN_HEIGHT);
+  SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
   SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // sets clear-color to Red
 
 
