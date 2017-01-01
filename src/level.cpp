@@ -78,6 +78,10 @@ void Level::load(const std::string &filename, SDL_Renderer *renderer) {
   this->width_in_tiles = static_cast<unsigned int>(root_obj["width_in_tiles"].get<double>());
   this->height_in_tiles = static_cast<unsigned int>(root_obj["height_in_tiles"].get<double>());
 
+  auto player_pos_array = root_obj["player_start_pos"].get<picojson::array>();
+  this->player_start_pos.x = player_pos_array[0].get<double>();
+  this->player_start_pos.y = player_pos_array[1].get<double>();
+
   this->tiles = new Tile[width_in_tiles * height_in_tiles];
   for (unsigned int i = 0; i < width_in_tiles * height_in_tiles; i ++)
     tiles[i] = {0, 0, -1};

@@ -5,10 +5,9 @@
 
 const float MAX_FORCE = 6.0f;
 
-Player::Player(Level *level) {
+Player::Player(Level *level, vec2 start_pos) {
   this->level = level;
-  this->position.x = 10 * 32;
-  this->position.y = 0;
+  this->position = start_pos;
   this->width  = 32;
   this->height = 70;
 }

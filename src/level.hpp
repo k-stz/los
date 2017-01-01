@@ -4,6 +4,8 @@
 #include <SDL2/SDL.h>
 #include <string>
 
+#include "vec.hpp"
+
 const int TILE_WIDTH = 32;
 const int TILE_HEIGHT = 32;
 
@@ -27,12 +29,15 @@ public:
 
   bool is_tile_solid(unsigned int x, unsigned int y);
 
+  vec2 get_player_start_pos() const { return this->player_start_pos; }
+
 private:
   unsigned int width_in_tiles = 0;
   unsigned int height_in_tiles = 0;
 
   std::string name;
   SDL_Texture *bg_texture = nullptr;
+  vec2 player_start_pos;
 
   Tile *tiles;
   TileDefinition *tile_definitions;

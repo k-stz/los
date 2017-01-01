@@ -7,7 +7,7 @@
 
 class Player : public Entity {
 public:
-  Player(Level *level);
+  Player(Level *level, vec2 start_pos);
 
   virtual ~Player(){}
 

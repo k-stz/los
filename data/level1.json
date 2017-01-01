@@ -3,6 +3,8 @@
   "width_in_tiles" : 32,
   "height_in_tiles" : 24,
 
+  "player_start_pos" : [640, 400],
+
   "tileset" : {
     "image" : "tileset1.png",
     "tiles" : [
