@@ -1,9 +1,9 @@
 #include "world.hpp"
 
 #include <iostream>
+#include "debug.hpp"
 
 static const vec2 GRAVITY = vec2(0, 0.00981);
-const bool draw_forces = true;
 
 World::World(SDL_Renderer *renderer) {
   this->default_font = TTF_OpenFont("DejaVuSans.ttf", 16);
@@ -71,7 +71,7 @@ void World::render(SDL_Renderer *renderer) {
   level->render(renderer);
   player->render(renderer);
 
-  if (draw_forces) {
+  if (DRAW_FORCES) {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderDrawLine(renderer,
                        player->position.x + (player->width / 2),
