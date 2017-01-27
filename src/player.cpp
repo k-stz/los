@@ -12,7 +12,7 @@ Player::Player(Level *level, vec2 start_pos) {
   this->height = 70;
 }
 
-void Player::input(Input *input) {
+void Player::input(const Input *input) {
   if (input->keycode == SDLK_RIGHT) {
     right_pressed = input->down;
   } else if (input->keycode == SDLK_LEFT) {

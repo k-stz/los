@@ -2,7 +2,7 @@
 #include <iostream>
 
 // Empty default implementation
-void Entity::input(Input *input) {
+void Entity::input(const Input *input) {
 }
 
 void Entity::update(unsigned int delta) {

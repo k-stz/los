@@ -4,6 +4,7 @@
 #include <SDL2/SDL.h>
 #include "vec.hpp"
 #include "util.hpp"
+#include "common.hpp"
 
 class Entity {
 public:
@@ -15,8 +16,8 @@ public:
 
   virtual ~Entity(){}
 
-  virtual void input(Input *input);
-  virtual void update(unsigned int delta);
+  virtual void input(const Input *input);
+  virtual void update(uint delta);
   virtual void render(SDL_Renderer *renderer) = 0;
 
   void apply_force(vec2 force, unsigned int delta);
