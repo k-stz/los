@@ -35,9 +35,9 @@ void Player::input(const Input *input) {
 
 void Player::update(unsigned int delta) {
   if (left_pressed)
-    apply_force(vec2(-0.1, 0), delta);
+    apply_force(vec2(-0.06, 0), delta);
   else if (right_pressed)
-    apply_force(vec2(+0.1, 0), delta);
+    apply_force(vec2(+0.06, 0), delta);
 
   if (up_pressed)
     apply_force(vec2(0, -0.003), delta);
@@ -126,7 +126,6 @@ void Player::update(unsigned int delta) {
         new_pos.x = rt * 32 - width;
         current_force.x = 0;
         touches_right = true;
-        std::cout << "Moving left because " << up_diff.length() << " >= " << left_diff.length() << std::endl;
       }
     }
   }
@@ -192,6 +191,17 @@ void Player::update(unsigned int delta) {
   this->hits_right  = touches_right;
   this->hits_top    = touches_top;
 
+  if (touches_top || touches_bottom) {
+    apply_force(vec2(- current_force.x / 10.0f, 0), delta); // Friction
+  } else {
+    // In air
+    current_force.x *= 1.0 - (delta * 0.02); // In air
+  }
+
+  if (touches_left || touches_right) {
+    apply_force(vec2(0, - current_force.y / 100), delta); // Friction
+  }
+
   this->current_force.min_all(MAX_FORCE);
 
   this->position = new_pos;
@@ -203,8 +213,6 @@ void Player::render(SDL_Renderer *renderer) {
                  width, height};
   SDL_Rect r2 = { 0, 0, width, height};
 
-  //SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-  //SDL_RenderFillRect (renderer, &r);
   SDL_RenderCopy(renderer, this->texture, &r2, &r);
 
 #if 0
