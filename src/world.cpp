@@ -13,7 +13,7 @@ World::World(SDL_Renderer *renderer) {
   }
 
   this->level = new Level("../data/level2.json", renderer);
-  this->player = new Player(level, level->get_player_start_pos());
+  this->player = new Player(level, renderer, level->get_player_start_pos());
 }
 
 World::~World() {

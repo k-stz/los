@@ -2,14 +2,21 @@
 
 #include <iostream>
 #include <cstdlib>
+#include <SDL2/SDL_image.h>
+#include <cassert>
 
 const float MAX_FORCE = 6.0f;
 
-Player::Player(Level *level, vec2 start_pos) {
+Player::Player(Level *level, SDL_Renderer *renderer, vec2 start_pos) {
   this->level = level;
   this->position = start_pos;
   this->width  = 32;
-  this->height = 48;
+  this->height = 32;
+
+  auto surface = IMG_Load("../data/kirby.png");
+  assert(surface);
+  this->texture = SDL_CreateTextureFromSurface(renderer, surface);
+  SDL_FreeSurface(surface);
 }
 
 void Player::input(const Input *input) {
@@ -194,10 +201,13 @@ void Player::render(SDL_Renderer *renderer) {
   SDL_Rect r = { static_cast<int>(position.x),
                  static_cast<int>(position.y),
                  width, height};
+  SDL_Rect r2 = { 0, 0, width, height};
 
-  SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-  SDL_RenderFillRect (renderer, &r);
+  //SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+  //SDL_RenderFillRect (renderer, &r);
+  SDL_RenderCopy(renderer, this->texture, &r2, &r);
 
+#if 0
   if (hits_bottom) {
     SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
 
@@ -234,7 +244,7 @@ void Player::render(SDL_Renderer *renderer) {
     SDL_RenderFillRect(renderer, &r);
 
   }
-
+#endif
 }
 
 

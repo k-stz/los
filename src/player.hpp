@@ -7,7 +7,7 @@
 
 class Player : public Entity {
 public:
-  Player(Level *level, vec2 start_pos);
+  Player(Level *level, SDL_Renderer *renderer, vec2 start_pos);
 
   virtual ~Player(){}
 
@@ -17,6 +17,7 @@ public:
 
 private:
   Level *level;
+  SDL_Texture *texture;
 
   // Input
   bool left_pressed  = false;
