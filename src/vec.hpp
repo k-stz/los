@@ -2,6 +2,7 @@
 #define __VEC_HPP
 
 #include <istream>
+#include <cmath>
 
 class vec2 {
 public:
@@ -14,13 +15,21 @@ public:
     this->y = y;
   }
 
+  float length() {
+    return sqrt((x * x) + (y * y));
+  }
+
   vec2& operator += (const vec2& other) {
     this->x += other.x;
     this->y += other.y;
     return *this;
   }
 
-
+  vec2& operator -= (const vec2& other) {
+    this->x -= other.x;
+    this->y -= other.y;
+    return *this;
+  }
 
   vec2 operator * (const float f) {
     vec2 other;
@@ -37,6 +46,11 @@ public:
 
   friend vec2 operator + (vec2 lhs, const vec2& rhs) {
     lhs += rhs;
+    return lhs;
+  }
+
+  friend vec2 operator - (vec2 lhs, const vec2& rhs) {
+    lhs -= rhs;
     return lhs;
   }
 

@@ -88,7 +88,7 @@ void Level::load(const std::string &filename, SDL_Renderer *renderer) {
 
   // Load background image
   // TODO: Make this optional
-  std::string bg_path = "data/" + root_obj["background"].get<std::string>();
+  std::string bg_path = "../data/" + root_obj["background"].get<std::string>();
   SDL_Surface *bg_surface = IMG_Load(bg_path.c_str());
   this->bg_texture = SDL_CreateTextureFromSurface(renderer, bg_surface);
   SDL_FreeSurface(bg_surface);
@@ -97,7 +97,7 @@ void Level::load(const std::string &filename, SDL_Renderer *renderer) {
   // Parse tileset
   // TODO: We might want to just save tilesets in their own file
   auto tileset_obj = root_obj["tileset"].get<picojson::object>();
-  std::string tileset_image = "data/" + tileset_obj["image"].get<std::string>();
+  std::string tileset_image = "../data/" + tileset_obj["image"].get<std::string>();
   SDL_Surface *tiledef_surface = IMG_Load(tileset_image.c_str());
   this->tileset_texture = SDL_CreateTextureFromSurface(renderer, tiledef_surface);
   SDL_FreeSurface(tiledef_surface);

@@ -17,9 +17,19 @@ public:
 
 private:
   Level *level;
-  bool left_pressed = false;
+
+  // Input
+  bool left_pressed  = false;
   bool right_pressed = false;
   bool space_pressed = false;
+  bool up_pressed    = false;
+  bool down_pressed  = false;
+
+  // Debugging
+  bool hits_left   = false;
+  bool hits_bottom = false;
+  bool hits_right  = false;
+  bool hits_top    = false;
 };
 
 #endif
