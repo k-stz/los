@@ -7,7 +7,8 @@ source_files = files([
   'src/level.cpp',
   'src/player.cpp',
   'src/world.cpp',
-  'src/entity.cpp'
+  'src/entity.cpp',
+  'src/tileset.cpp',
 ])
 
 sdl_dep = dependency('sdl2')

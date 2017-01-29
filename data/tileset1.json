@@ -1,0 +1,25 @@
+{
+  "texture" : "tileset3.png",
+  "tiles" : [
+    {
+      "coords" : [0, 0, 32, 32],
+      "solid" : true
+    },
+    {
+      "coords" : [32, 0, 32, 32],
+      "solid"  : true
+    },
+    {
+      "coords" : [64, 0, 32, 32],
+      "solid" : true
+    },
+    {
+      "coords" : [96, 0, 32, 32],
+      "solid" : true
+    },
+    {
+      "coords" : [128, 0, 32, 32],
+      "solid" : true
+    }
+  ]
+}

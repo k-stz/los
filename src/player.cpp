@@ -192,7 +192,7 @@ void Player::update(unsigned int delta) {
   this->hits_top    = touches_top;
 
   if (touches_top || touches_bottom) {
-    apply_force(vec2(- current_force.x / 10.0f, 0), delta); // Friction
+    apply_force(vec2(- current_force.x / 7.0f, 0), delta); // Friction
   } else {
     // In air
     current_force.x *= 1.0 - (delta * 0.02); // In air
@@ -209,7 +209,7 @@ void Player::update(unsigned int delta) {
 
 void Player::render(SDL_Renderer *renderer) {
   SDL_Rect r = { static_cast<int>(position.x),
-                 static_cast<int>(position.y),
+                 static_cast<int>(position.y) + 2,
                  width, height};
   SDL_Rect r2 = { 0, 0, width, height};
 

@@ -11,10 +11,8 @@ Level::Level(const std::string &filename, SDL_Renderer *renderer) {
 }
 
 Level::~Level() {
-  SDL_DestroyTexture(tileset_texture);
   SDL_DestroyTexture(bg_texture);
   delete[] tiles;
-  delete[] tile_definitions;
 }
 
 void Level::update(unsigned int delta) {
@@ -36,11 +34,11 @@ void Level::render(SDL_Renderer *renderer) {
     int y =  i / width_in_tiles;
     int x = i - (y * width_in_tiles);
 
-    TileDefinition *tile_def = &this->tile_definitions[this->tiles[i].index];
+    TileDefinition *tile_def = tileset->get_tiledef(this->tiles[i].index);
     SDL_Rect texture_coords = {tile_def->x, tile_def->y, tile_def->w, tile_def->h};
     SDL_Rect screen_coords  = {x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT};
 
-    SDL_RenderCopy(renderer, this->tileset_texture,
+    SDL_RenderCopy(renderer, this->tileset->texture,
                    &texture_coords, &screen_coords);
   }
 
@@ -96,26 +94,9 @@ void Level::load(const std::string &filename, SDL_Renderer *renderer) {
 
   // Parse tileset
   // TODO: We might want to just save tilesets in their own file
-  auto tileset_obj = root_obj["tileset"].get<picojson::object>();
-  std::string tileset_image = "../data/" + tileset_obj["image"].get<std::string>();
-  SDL_Surface *tiledef_surface = IMG_Load(tileset_image.c_str());
-  this->tileset_texture = SDL_CreateTextureFromSurface(renderer, tiledef_surface);
-  SDL_FreeSurface(tiledef_surface);
-  assert(tileset_texture != nullptr);
-
-  auto tiledef_array = tileset_obj["tiles"].get<picojson::array>();
-  this->tileset_size = tiledef_array.size();
-  this->tile_definitions = new TileDefinition[tileset_size];
-
-  unsigned int tiledef_id = 0;
-  for (auto t : tiledef_array) {
-    auto tile_arr = t.get<picojson::array>();
-    this->tile_definitions[tiledef_id].x = static_cast<int>(tile_arr[0].get<double>());
-    this->tile_definitions[tiledef_id].y = static_cast<int>(tile_arr[1].get<double>());
-    this->tile_definitions[tiledef_id].w = static_cast<int>(tile_arr[2].get<double>());
-    this->tile_definitions[tiledef_id].h = static_cast<int>(tile_arr[3].get<double>());
-    tiledef_id ++;
-  }
+  auto tileset_name = root_obj["tileset"].get<std::string>();
+  this->tileset = new Tileset(tileset_name);
+  this->tileset->load(renderer);
 
   auto tiles_array = root_obj["tiles"].get<picojson::array>();
   int cur_row = 0;

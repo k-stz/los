@@ -5,6 +5,7 @@
 #include <string>
 
 #include "vec.hpp"
+#include "tileset.hpp"
 
 const int TILE_WIDTH = 32;
 const int TILE_HEIGHT = 32;
@@ -12,10 +13,6 @@ const int TILE_HEIGHT = 32;
 struct Tile {
   int x, y;
   int index;
-};
-
-struct TileDefinition {
-  int x, y, w, h;
 };
 
 class Level {
@@ -39,10 +36,8 @@ private:
   SDL_Texture *bg_texture = nullptr;
   vec2 player_start_pos;
 
+  Tileset *tileset;
   Tile *tiles;
-  TileDefinition *tile_definitions;
-  unsigned int tileset_size;
-  SDL_Texture *tileset_texture = nullptr;
 
   void load(const std::string &filename, SDL_Renderer *renderer);
 };
