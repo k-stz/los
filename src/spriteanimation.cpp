@@ -33,7 +33,11 @@ void SpriteAnimation::set_active_subanimation(uint index) {
   assert(index >= 0);
   assert(index < ranges.size());
 
+  if (current_range == index)
+    return;
+
   this->current_range = index;
+  this->current_frame_index = ranges.at(index).from;
 }
 
 void SpriteAnimation::update(uint delta) {
@@ -55,10 +59,10 @@ void SpriteAnimation::get_frame_coords(SDL_Rect *rect) {
   SDL_QueryTexture(this->texture, nullptr, nullptr, &texture_width, &texture_height);
 
   uint n_frames_x = texture_width / frame_width;
-  uint n_frames_y = texture_height / frame_height;
+  //uint n_frames_y = texture_height / frame_height;
 
-  rect->x = 0;
-  rect->y = 0;
+  //rect->x = 0;
+  //rect->y = 0;
   rect->w = frame_width;
   rect->h = frame_height;
 

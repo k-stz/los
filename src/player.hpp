@@ -22,7 +22,8 @@ private:
 
   // animations
   uint standing_anim;
-  uint walkin_right_anim;
+  uint walking_right_anim;
+  uint walking_left_anim;
 
   // Input
   bool left_pressed  = false;

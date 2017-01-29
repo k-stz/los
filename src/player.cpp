@@ -18,7 +18,8 @@ Player::Player(Level *level, SDL_Renderer *renderer, vec2 start_pos) {
                                         100, //ms
                                         32, 32);
   standing_anim = animation->add_subanimation(0, 0);
-  standing_anim = animation->add_subanimation(1, 6);
+  walking_right_anim = animation->add_subanimation(1, 6);
+  walking_left_anim = animation->add_subanimation(7, 12);
 }
 
 void Player::input(const Input *input) {
@@ -36,10 +37,16 @@ void Player::input(const Input *input) {
 }
 
 void Player::update(unsigned int delta) {
-  if (left_pressed)
+  if (left_pressed) {
     apply_force(vec2(-0.06, 0), delta);
-  else if (right_pressed)
+    animation->set_active_subanimation(walking_left_anim);
+  } else if (right_pressed) {
     apply_force(vec2(+0.06, 0), delta);
+    animation->set_active_subanimation(walking_right_anim);
+  } else {
+    animation->set_active_subanimation(standing_anim);
+  }
+
 
   if (up_pressed)
     apply_force(vec2(0, -0.003), delta);
@@ -202,7 +209,6 @@ void Player::update(unsigned int delta) {
   }
 
   this->current_force.min_all(MAX_FORCE);
-
   this->position = new_pos;
 
 #if 0
