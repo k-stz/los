@@ -30,8 +30,8 @@ public:
   vec2 get_player_start_pos() const { return this->player_start_pos; }
 
 private:
-  unsigned int width_in_tiles = 0;
-  unsigned int height_in_tiles = 0;
+  uint width_in_tiles  = 0;
+  uint height_in_tiles = 0;
 
   std::string name;
   SDL_Texture *bg_texture = nullptr;

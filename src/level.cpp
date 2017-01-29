@@ -17,8 +17,7 @@ Level::~Level() {
 }
 
 void Level::update(unsigned int delta) {
-  this->offset_x = (1024 - (width_in_tiles  * TILE_SIZE)) / 2; // TODO: Hardcoded screen size
-  this->offset_y = (768 - (height_in_tiles * TILE_SIZE)) / 2;
+
 }
 
 void Level::render(SDL_Renderer *renderer) {
@@ -115,6 +114,12 @@ void Level::load(const std::string &filename, SDL_Renderer *renderer) {
     }
     cur_row ++;
   }
+
+  // TODO: Hardcoded screen size
+  // Set initial level offset
+  // TODO: Depending on the player position, this might be wrong (player should always be visible).
+  this->offset_x = std::max(0, (1024 - static_cast<int>((width_in_tiles  * TILE_SIZE))) / 2);
+  this->offset_y = std::max(0, (768  - static_cast<int>((height_in_tiles * TILE_SIZE))) / 2);
 }
 
 bool Level::is_tile_solid(unsigned int x, unsigned int y) {
