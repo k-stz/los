@@ -23,9 +23,11 @@ Player::Player(Level *level, SDL_Renderer *renderer, vec2 start_pos) {
 }
 
 void Player::input(const Input *input) {
-  if (input->keycode == SDLK_RIGHT) {
+  if (input->keycode == SDLK_RIGHT ||
+      input->keycode == SDLK_d) {
     right_pressed = input->down;
-  } else if (input->keycode == SDLK_LEFT) {
+  } else if (input->keycode == SDLK_LEFT ||
+             input->keycode == SDLK_a) {
     left_pressed = input->down;
   } else if (input->keycode == SDLK_SPACE) {
     space_pressed = true;
