@@ -9,6 +9,7 @@ source_files = files([
   'src/world.cpp',
   'src/entity.cpp',
   'src/tileset.cpp',
+  'src/spriteanimation.cpp'
 ])
 
 sdl_dep = dependency('sdl2')

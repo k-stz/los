@@ -4,6 +4,7 @@
 #include "entity.hpp"
 #include "level.hpp"
 #include "util.hpp"
+#include "spriteanimation.hpp"
 
 class Player : public Entity {
 public:
@@ -17,7 +18,11 @@ public:
 
 private:
   Level *level;
-  SDL_Texture *texture;
+  SpriteAnimation *animation;
+
+  // animations
+  uint standing_anim;
+  uint walkin_right_anim;
 
   // Input
   bool left_pressed  = false;

@@ -1,5 +1,6 @@
 #include "level.hpp"
 #include "picojson.h"
+#include "common.hpp"
 
 #include <iostream>
 #include <fstream>
@@ -7,7 +8,7 @@
 #include <cassert>
 
 Level::Level(const std::string &filename, SDL_Renderer *renderer) {
-  this->load(filename, renderer);
+  this->load(BASEPATH + filename + ".json", renderer);
 }
 
 Level::~Level() {
@@ -122,6 +123,7 @@ bool Level::is_tile_solid(unsigned int x, unsigned int y) {
   assert(y >= 0);
   assert(y < height_in_tiles);
 
+  // TODO: Use 'solid' flag from TileDefinition
   return tiles[y * width_in_tiles + x].index != -1;
 }
 

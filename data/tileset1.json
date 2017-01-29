@@ -20,6 +20,10 @@
     {
       "coords" : [128, 0, 32, 32],
       "solid" : true
+    },
+    {
+      "coords" : [160, 0, 32, 32],
+      "solid"  : true
     }
   ]
 }

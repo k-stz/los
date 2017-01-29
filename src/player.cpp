@@ -13,10 +13,12 @@ Player::Player(Level *level, SDL_Renderer *renderer, vec2 start_pos) {
   this->width  = 32;
   this->height = 32;
 
-  auto surface = IMG_Load("../data/kirby.png");
-  assert(surface);
-  this->texture = SDL_CreateTextureFromSurface(renderer, surface);
-  SDL_FreeSurface(surface);
+  this->animation = new SpriteAnimation(renderer,
+                                        "kirby.png",
+                                        100, //ms
+                                        32, 32);
+  standing_anim = animation->add_subanimation(0, 0);
+  standing_anim = animation->add_subanimation(1, 6);
 }
 
 void Player::input(const Input *input) {
@@ -49,6 +51,8 @@ void Player::update(unsigned int delta) {
     space_pressed = false;
   }
 
+  this->animation->update(delta);
+
   this->hits_bottom = false;
   this->hits_left   = false;
   this->hits_right  = false;
@@ -59,10 +63,10 @@ void Player::update(unsigned int delta) {
 
   // Use macros here so we don't have to reevaluate the variables
   // every time we modify new_pos
-#define top_tile    (new_pos.y / 32)
-#define bottom_tile ((new_pos.y + height) / 32)
-#define left_tile   (new_pos.x / 32)
-#define right_tile  ((new_pos.x + width) / 32)
+#define top_tile    (new_pos.y / TILE_SIZE)
+#define bottom_tile ((new_pos.y + height) / TILE_SIZE)
+#define left_tile   (new_pos.x / TILE_SIZE)
+#define right_tile  ((new_pos.x + width) / TILE_SIZE)
 
   bool touches_bottom = false;
   bool touches_top    = false;
@@ -80,8 +84,8 @@ void Player::update(unsigned int delta) {
     // cause the least movement.
     int lt = left_tile;
     int bt = bottom_tile;
-    vec2 new_up_pos    = vec2(new_pos.x,     (bt * 32) - height);
-    vec2 new_right_pos = vec2((lt + 1) * 32, new_pos.y);
+    vec2 new_up_pos    = vec2(new_pos.x,     (bt * TILE_SIZE) - height);
+    vec2 new_right_pos = vec2((lt + 1) * TILE_SIZE, new_pos.y);
 
     vec2 up_diff    = new_up_pos    - new_pos;
     vec2 right_diff = new_right_pos - new_pos;
@@ -89,14 +93,14 @@ void Player::update(unsigned int delta) {
     if (up_diff.length() < right_diff.length()) {
       // Move up if that tile is not solid
       if (!level->is_tile_solid(left_tile, bottom_tile - 1)) {
-        new_pos.y = (bt * 32) - height;
+        new_pos.y = (bt * TILE_SIZE) - height;
         current_force.y = 0;
         touches_bottom = true;
       }
     } else {
       // Move right if that tile is not solid
       if (!level->is_tile_solid(left_tile + 1, bottom_tile)) {
-        new_pos.x = (lt + 1) * 32;
+        new_pos.x = (lt + 1) * TILE_SIZE;
         current_force.x = 0;
         touches_left = true;
       }
@@ -107,8 +111,8 @@ void Player::update(unsigned int delta) {
   if (level->is_tile_solid(right_tile, bottom_tile)) {
     int rt = right_tile;
     int bt = bottom_tile;
-    vec2 new_up_pos    = vec2(new_pos.x, (bt * 32) - height);
-    vec2 new_left_pos  = vec2(rt * 32- width, new_pos.y);
+    vec2 new_up_pos    = vec2(new_pos.x, (bt * TILE_SIZE) - height);
+    vec2 new_left_pos  = vec2(rt * TILE_SIZE- width, new_pos.y);
 
     vec2 up_diff   = new_up_pos - new_pos;
     vec2 left_diff = new_left_pos - new_pos;
@@ -116,14 +120,14 @@ void Player::update(unsigned int delta) {
     if (up_diff.length() < left_diff.length()) {
       // Move up if that tile is not solid
       if (!level->is_tile_solid(right_tile, bottom_tile - 1)) {
-        new_pos.y = (bt * 32) - height;
+        new_pos.y = (bt * TILE_SIZE) - height;
         current_force.y = 0;
         touches_bottom = true;
       }
     } else {
       // Move left if that tile is not solid
       if (!level->is_tile_solid(right_tile - 1, bottom_tile)) {
-        new_pos.x = rt * 32 - width;
+        new_pos.x = rt * TILE_SIZE - width;
         current_force.x = 0;
         touches_right = true;
       }
@@ -135,8 +139,8 @@ void Player::update(unsigned int delta) {
     int tt = top_tile;
     int lt = left_tile;
 
-    vec2 new_down_pos  = vec2(new_pos.x, (tt + 1) * 32);
-    vec2 new_right_pos = vec2((lt + 1) * 32, new_pos.y);
+    vec2 new_down_pos  = vec2(new_pos.x, (tt + 1) * TILE_SIZE);
+    vec2 new_right_pos = vec2((lt + 1) * TILE_SIZE, new_pos.y);
 
     vec2 down_diff  = new_down_pos - new_pos;
     vec2 right_diff = new_right_pos - new_pos;
@@ -144,14 +148,14 @@ void Player::update(unsigned int delta) {
     if (down_diff.length() < right_diff.length()) {
       // Move down if that tile is not solid
       if (!level->is_tile_solid(left_tile, top_tile + 1)) {
-        new_pos.y = (tt + 1) * 32;
+        new_pos.y = (tt + 1) * TILE_SIZE;
         current_force.y = 0;
         touches_top = true;
       }
     } else {
       // Move right if that tile is not solid
       if (!level->is_tile_solid(left_tile + 1, top_tile)) {
-        new_pos.x = (lt + 1) * 32;
+        new_pos.x = (lt + 1) * TILE_SIZE;
         current_force.x = 0;
         touches_left = true;
       }
@@ -163,8 +167,8 @@ void Player::update(unsigned int delta) {
     int tt = top_tile;
     int rt = right_tile;
 
-    vec2 new_down_pos  = vec2(new_pos.x, (tt + 1) * 32);
-    vec2 new_left_pos  = vec2(rt * 32- width, new_pos.y);
+    vec2 new_down_pos  = vec2(new_pos.x, (tt + 1) * TILE_SIZE);
+    vec2 new_left_pos  = vec2(rt * TILE_SIZE- width, new_pos.y);
 
     vec2 down_diff  = new_down_pos - new_pos;
     vec2 left_diff = new_left_pos - new_pos;
@@ -172,24 +176,19 @@ void Player::update(unsigned int delta) {
     if (down_diff.length() < left_diff.length()) {
       // Move down if that tile is not solid
       if (!level->is_tile_solid(right_tile, top_tile + 1)) {
-        new_pos.y = (tt + 1) * 32;
+        new_pos.y = (tt + 1) * TILE_SIZE;
         current_force.y = 0;
         touches_top = true;
       }
     } else {
       // Move left
       if (!level->is_tile_solid(right_tile - 1, top_tile)) {
-        new_pos.x = rt * 32 - width;
+        new_pos.x = rt * TILE_SIZE - width;
         current_force.x = 0;
         touches_right = true;
       }
     }
   }
-
-  this->hits_bottom = touches_bottom;
-  this->hits_left   = touches_left;
-  this->hits_right  = touches_right;
-  this->hits_top    = touches_top;
 
   if (touches_top || touches_bottom) {
     apply_force(vec2(- current_force.x / 7.0f, 0), delta); // Friction
@@ -205,15 +204,24 @@ void Player::update(unsigned int delta) {
   this->current_force.min_all(MAX_FORCE);
 
   this->position = new_pos;
+
+#if 0
+  this->hits_bottom = touches_bottom;
+  this->hits_left   = touches_left;
+  this->hits_right  = touches_right;
+  this->hits_top    = touches_top;
+#endif
 }
 
 void Player::render(SDL_Renderer *renderer) {
   SDL_Rect r = { static_cast<int>(position.x) + level->offset_x,
                  static_cast<int>(position.y) + level->offset_y,
                  width, height};
-  SDL_Rect r2 = { 0, 0, width, height};
 
-  SDL_RenderCopy(renderer, this->texture, &r2, &r);
+  SDL_Rect r2;
+  this->animation->get_frame_coords(&r2);
+
+  SDL_RenderCopy(renderer, this->animation->texture, &r2, &r);
 
 #if 0
   if (hits_bottom) {

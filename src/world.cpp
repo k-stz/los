@@ -12,7 +12,7 @@ World::World(SDL_Renderer *renderer) {
     std::cout << "Couldn't load font: " << TTF_GetError() << std::endl;
   }
 
-  this->level = new Level("../data/level2.json", renderer);
+  this->level = new Level("level2", renderer);
   this->player = new Player(level, renderer, level->get_player_start_pos());
 }
 
