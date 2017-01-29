@@ -1,3 +1,3 @@
 
 
-#define DRAW_FORCES true
+#define DRAW_FORCES false

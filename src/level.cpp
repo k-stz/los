@@ -87,14 +87,13 @@ void Level::load(const std::string &filename, SDL_Renderer *renderer) {
 
   // Load background image
   // TODO: Make this optional
-  std::string bg_path = "../data/" + root_obj["background"].get<std::string>();
+  std::string bg_path = BASEPATH+ root_obj["background"].get<std::string>();
   SDL_Surface *bg_surface = IMG_Load(bg_path.c_str());
   this->bg_texture = SDL_CreateTextureFromSurface(renderer, bg_surface);
   SDL_FreeSurface(bg_surface);
   assert(bg_texture != nullptr);
 
   // Parse tileset
-  // TODO: We might want to just save tilesets in their own file
   auto tileset_name = root_obj["tileset"].get<std::string>();
   this->tileset = new Tileset(tileset_name);
   this->tileset->load(renderer);
@@ -129,7 +128,11 @@ bool Level::is_tile_solid(unsigned int x, unsigned int y) {
   assert(y < height_in_tiles);
 
   // TODO: Use 'solid' flag from TileDefinition
-  return tiles[y * width_in_tiles + x].index != -1;
+  int index = tiles[y * width_in_tiles + x].index;
+  if (index == -1)
+    return false;
+
+  return tileset->get_tiledef(index)->solid;
 }
 
 
