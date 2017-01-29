@@ -208,8 +208,8 @@ void Player::update(unsigned int delta) {
 }
 
 void Player::render(SDL_Renderer *renderer) {
-  SDL_Rect r = { static_cast<int>(position.x),
-                 static_cast<int>(position.y) + 2,
+  SDL_Rect r = { static_cast<int>(position.x) + level->offset_x,
+                 static_cast<int>(position.y) + level->offset_y,
                  width, height};
   SDL_Rect r2 = { 0, 0, width, height};
 

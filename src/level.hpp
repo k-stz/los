@@ -17,6 +17,8 @@ struct Tile {
 
 class Level {
 public:
+  int offset_x = 0;
+  int offset_y = 0;
 
   Level(const std::string &filename, SDL_Renderer *renderer);
   virtual ~Level();
