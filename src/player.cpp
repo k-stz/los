@@ -6,6 +6,7 @@
 #include <cassert>
 
 const float MAX_FORCE = 6.0f;
+const uint  PLAYER_WALK_AREA_SIZE = 450;
 
 Player::Player(Level *level, SDL_Renderer *renderer, vec2 start_pos) {
   this->level = level;
@@ -213,6 +214,15 @@ void Player::update(unsigned int delta) {
   this->current_force.min_all(MAX_FORCE);
   this->position = new_pos;
 
+  // Update level offset
+  // TODO: Do the same thing in y direction
+  // TODO: Hardcoded screens size!
+  if (position.x + width > -level->offset_x + 512 + PLAYER_WALK_AREA_SIZE / 2) {
+    level->offset_x = (512 + PLAYER_WALK_AREA_SIZE / 2) - (position.x + width);
+  } else if (position.x < -level->offset_x + 512 - PLAYER_WALK_AREA_SIZE / 2) {
+    level->offset_x = (512 - PLAYER_WALK_AREA_SIZE / 2) - position.x;
+  }
+
 #if 0
   this->hits_bottom = touches_bottom;
   this->hits_left   = touches_left;
@@ -269,6 +279,19 @@ void Player::render(SDL_Renderer *renderer) {
 
   }
 #endif
+
+  // Debug: Draw player walk area
+#if 0
+  {
+    const SDL_Rect r = { 1024/2 - PLAYER_WALK_AREA_SIZE / 2,
+                        768/2  - PLAYER_WALK_AREA_SIZE / 2,
+                        PLAYER_WALK_AREA_SIZE,
+                        PLAYER_WALK_AREA_SIZE};
+    SDL_RenderDrawRect(renderer, &r);
+  }
+#endif
+
+
 }
 
 
