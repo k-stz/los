@@ -17,8 +17,8 @@ Level::~Level() {
 }
 
 void Level::update(unsigned int delta) {
-  this->offset_x = (1024 - (width_in_tiles  * TILE_WIDTH)) / 2; // TODO: Hardcoded screen size
-  this->offset_y = (768 - (height_in_tiles * TILE_HEIGHT)) / 2;
+  this->offset_x = (1024 - (width_in_tiles  * TILE_SIZE)) / 2; // TODO: Hardcoded screen size
+  this->offset_y = (768 - (height_in_tiles * TILE_SIZE)) / 2;
 }
 
 void Level::render(SDL_Renderer *renderer) {
@@ -38,7 +38,7 @@ void Level::render(SDL_Renderer *renderer) {
 
     TileDefinition *tile_def = tileset->get_tiledef(this->tiles[i].index);
     SDL_Rect texture_coords = {tile_def->x, tile_def->y, tile_def->w, tile_def->h};
-    SDL_Rect screen_coords  = {offset_x + x * TILE_WIDTH, offset_y + y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT};
+    SDL_Rect screen_coords  = {offset_x + x * TILE_SIZE, offset_y + y * TILE_SIZE, TILE_SIZE, TILE_SIZE};
 
     SDL_RenderCopy(renderer, this->tileset->texture,
                    &texture_coords, &screen_coords);

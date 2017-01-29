@@ -10,8 +10,8 @@ const float MAX_FORCE = 6.0f;
 Player::Player(Level *level, SDL_Renderer *renderer, vec2 start_pos) {
   this->level = level;
   this->position = start_pos;
-  this->width  = 32;
-  this->height = 32;
+  this->width  = TILE_SIZE;
+  this->height = TILE_SIZE;
 
   this->animation = new SpriteAnimation(renderer,
                                         "kirby.png",

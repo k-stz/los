@@ -7,8 +7,6 @@
 #include "vec.hpp"
 #include "tileset.hpp"
 
-const int TILE_WIDTH  = 32;
-const int TILE_HEIGHT = 32;
 const int TILE_SIZE   = 32; // *shrug*
 
 struct Tile {
