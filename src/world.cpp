@@ -41,13 +41,14 @@ void World::render(SDL_Renderer *renderer) {
   player->render(renderer);
 
   if (DRAW_FORCES) {
-    if (std::abs(player->current_force.x) >= 1.0 || std::abs(player->current_force.y) >= 1.0) {
+    if (std::abs(player->current_force.x * 100) >= 1.0 ||
+        std::abs(player->current_force.y * 100) >= 1.0) {
       SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
       SDL_RenderDrawLine(renderer,
-                         player->position.x + (player->width / 2),
-                         player->position.y + (player->height / 2),
-                         player->position.x + (player->width / 2) + player->current_force.x * 100,
-                         player->position.y + (player->height / 2) + player->current_force.y * 100);
+                         player->position.x + (player->width / 2) + level->offset_x,
+                         player->position.y + (player->height / 2) + level->offset_y,
+                         player->position.x + (player->width / 2) + player->current_force.x * 100 + level->offset_x,
+                         player->position.y + (player->height / 2) + player->current_force.y * 100 + level->offset_y);
     }
   }
 
