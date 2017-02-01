@@ -20,7 +20,7 @@ Player::Player(Level *level, SDL_Renderer *renderer, vec2 start_pos) {
                                         32, 32);
   standing_anim = animation->add_subanimation(0, 0);
   walking_right_anim = animation->add_subanimation(1, 6);
-  walking_left_anim = animation->add_subanimation(7, 12);
+  walking_left_anim = animation->add_subanimation(8, 12);
 }
 
 void Player::input(const Input *input) {
