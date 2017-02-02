@@ -7,7 +7,7 @@
 static const vec2 GRAVITY = vec2(0, 0.00981);
 
 World::World(SDL_Renderer *renderer) {
-  this->default_font = TTF_OpenFont("../DejaVuSans.ttf", 16);
+  this->default_font = TTF_OpenFont(BASEPATH "DejaVuSans.ttf", 16);
   if (default_font == NULL) {
     std::cout << "Couldn't load font: " << TTF_GetError() << std::endl;
   }
