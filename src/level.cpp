@@ -122,12 +122,10 @@ void Level::load(const std::string &filename, SDL_Renderer *renderer) {
 }
 
 bool Level::is_tile_solid(unsigned int x, unsigned int y) {
-  assert(x >= 0);
-  assert(x < width_in_tiles);
-  assert(y >= 0);
-  assert(y < height_in_tiles);
+  if (x < 0 || x >= width_in_tiles ||
+      y < 0 || y >= height_in_tiles)
+    return false;
 
-  // TODO: Use 'solid' flag from TileDefinition
   int index = tiles[y * width_in_tiles + x].index;
   if (index == -1)
     return false;
